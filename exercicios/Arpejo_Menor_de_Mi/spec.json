@@ -1,0 +1,21 @@
+{
+ "title": "Arpejo Menor de Mi",
+ "sharps": 1,
+ "flats": 0,
+ "tempo": 80,
+ "time": "4/4",
+ "measures": [
+  [
+   "E4:0.5",
+   "G4:0.5",
+   "B4:0.5",
+   "E5:0.5",
+   "B4:0.5",
+   "G4:0.5",
+   "E4:1"
+  ]
+ ],
+ "repeats": [
+  ""
+ ]
+}

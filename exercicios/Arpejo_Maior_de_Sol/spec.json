@@ -1,0 +1,21 @@
+{
+ "title": "Arpejo Maior de Sol",
+ "sharps": 1,
+ "flats": 0,
+ "tempo": 80,
+ "time": "4/4",
+ "measures": [
+  [
+   "G4:0.5",
+   "B4:0.5",
+   "D5:0.5",
+   "G5:0.5",
+   "D5:0.5",
+   "B4:0.5",
+   "G4:1"
+  ]
+ ],
+ "repeats": [
+  ""
+ ]
+}

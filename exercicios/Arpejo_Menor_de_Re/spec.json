@@ -1,0 +1,21 @@
+{
+ "title": "Arpejo Menor de Ré",
+ "sharps": -1,
+ "flats": 0,
+ "tempo": 80,
+ "time": "4/4",
+ "measures": [
+  [
+   "D4:0.5",
+   "F4:0.5",
+   "A4:0.5",
+   "D5:0.5",
+   "A4:0.5",
+   "F4:0.5",
+   "D4:1"
+  ]
+ ],
+ "repeats": [
+  ""
+ ]
+}

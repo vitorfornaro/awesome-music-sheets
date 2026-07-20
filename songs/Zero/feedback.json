@@ -1,0 +1,190 @@
+{
+  "musica": "Zero",
+  "validados": [
+    6,
+    7,
+    10,
+    11,
+    15,
+    18,
+    22,
+    23,
+    26,
+    27,
+    31
+  ],
+  "problemas": [
+    {
+      "compasso": 1,
+      "tipos": [
+        "ritmo",
+        "ligadura",
+        "beaming"
+      ],
+      "observacao": "nota 1 com tempo errado\n"
+    },
+    {
+      "compasso": 2,
+      "tipos": [
+        "beaming"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 3,
+      "tipos": [
+        "beaming",
+        "ritmo"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 4,
+      "tipos": [
+        "ritmo",
+        "ligadura"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 5,
+      "tipos": [
+        "ritmo"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 8,
+      "tipos": [
+        "nota_errada"
+      ],
+      "observacao": "nao tem sustenido nesse lá"
+    },
+    {
+      "compasso": 9,
+      "tipos": [
+        "ligadura",
+        "beaming"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 12,
+      "tipos": [
+        "ritmo",
+        "beaming"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 13,
+      "tipos": [
+        "beaming",
+        "nota_errada"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 14,
+      "tipos": [
+        "nota_errada",
+        "beaming"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 16,
+      "tipos": [
+        "ritmo",
+        "nota_errada",
+        "beaming"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 17,
+      "tipos": [
+        "ritmo",
+        "beaming"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 19,
+      "tipos": [],
+      "observacao": ""
+    },
+    {
+      "compasso": 20,
+      "tipos": [
+        "ritmo",
+        "beaming"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 21,
+      "tipos": [
+        "nota_faltante",
+        "ritmo",
+        "beaming"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 24,
+      "tipos": [
+        "nota_errada",
+        "ritmo",
+        "ligadura"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 25,
+      "tipos": [
+        "ritmo",
+        "beaming"
+      ],
+      "observacao": "aqui a pausa tem alongamento, nao foi considerada, e a nota 121 tem outro tempo, nota 117 tambem outro tempo"
+    },
+    {
+      "compasso": 28,
+      "tipos": [
+        "beaming",
+        "ritmo"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 29,
+      "tipos": [
+        "ritmo",
+        "ligadura"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 30,
+      "tipos": [
+        "ligadura"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 32,
+      "tipos": [
+        "beaming",
+        "nota_errada"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 33,
+      "tipos": [
+        "ritmo"
+      ],
+      "observacao": "nota 3 com ritmo errado"
+    }
+  ]
+}

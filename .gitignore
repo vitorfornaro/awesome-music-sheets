@@ -1,0 +1,18 @@
+# scratch/renders/QA por música — regeneráveis pelo pipeline
+songs/*/work/
+
+# artefatos intermediários
+*.wav
+*.mid
+_work/
+# .mp3 soltos: redundantes — o áudio já vai embutido (base64) nos *_player.html
+songs/*/*.mp3
+exercicios/*/*.mp3
+
+# relatórios/scratch na raiz
+work_qa_notecount.txt
+
+# python
+__pycache__/
+*.pyc
+.DS_Store

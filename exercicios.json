@@ -1,0 +1,532 @@
+[
+  {
+    "title": "Escala Maior de Dó",
+    "categoria": "Escalas",
+    "tom": "Dó",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Escala_Maior_de_Do",
+    "file": "exercicios/Escala_Maior_de_Do/Escala_Maior_de_Do_player.html",
+    "thumb": "exercicios/Escala_Maior_de_Do/thumb.png"
+  },
+  {
+    "title": "Escala Maior de Sol",
+    "categoria": "Escalas",
+    "tom": "Sol",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Escala_Maior_de_Sol",
+    "file": "exercicios/Escala_Maior_de_Sol/Escala_Maior_de_Sol_player.html",
+    "thumb": "exercicios/Escala_Maior_de_Sol/thumb.png"
+  },
+  {
+    "title": "Escala Maior de Ré",
+    "categoria": "Escalas",
+    "tom": "Ré",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Escala_Maior_de_Re",
+    "file": "exercicios/Escala_Maior_de_Re/Escala_Maior_de_Re_player.html",
+    "thumb": "exercicios/Escala_Maior_de_Re/thumb.png"
+  },
+  {
+    "title": "Escala Maior de Fá",
+    "categoria": "Escalas",
+    "tom": "Fá",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Escala_Maior_de_Fa",
+    "file": "exercicios/Escala_Maior_de_Fa/Escala_Maior_de_Fa_player.html",
+    "thumb": "exercicios/Escala_Maior_de_Fa/thumb.png"
+  },
+  {
+    "title": "Escala Maior de Sib",
+    "categoria": "Escalas",
+    "tom": "Sib",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Escala_Maior_de_Sib",
+    "file": "exercicios/Escala_Maior_de_Sib/Escala_Maior_de_Sib_player.html",
+    "thumb": "exercicios/Escala_Maior_de_Sib/thumb.png"
+  },
+  {
+    "title": "Escala Maior de Lá",
+    "categoria": "Escalas",
+    "tom": "Lá",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Escala_Maior_de_La",
+    "file": "exercicios/Escala_Maior_de_La/Escala_Maior_de_La_player.html",
+    "thumb": "exercicios/Escala_Maior_de_La/thumb.png"
+  },
+  {
+    "title": "Escala Menor de Lá",
+    "categoria": "Escalas",
+    "tom": "Lá menor",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Escala_Menor_de_La",
+    "file": "exercicios/Escala_Menor_de_La/Escala_Menor_de_La_player.html",
+    "thumb": "exercicios/Escala_Menor_de_La/thumb.png"
+  },
+  {
+    "title": "Escala Menor de Mi",
+    "categoria": "Escalas",
+    "tom": "Mi menor",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Escala_Menor_de_Mi",
+    "file": "exercicios/Escala_Menor_de_Mi/Escala_Menor_de_Mi_player.html",
+    "thumb": "exercicios/Escala_Menor_de_Mi/thumb.png"
+  },
+  {
+    "title": "Escala Menor de Ré",
+    "categoria": "Escalas",
+    "tom": "Ré menor",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Escala_Menor_de_Re",
+    "file": "exercicios/Escala_Menor_de_Re/Escala_Menor_de_Re_player.html",
+    "thumb": "exercicios/Escala_Menor_de_Re/thumb.png"
+  },
+  {
+    "title": "Arpejo Maior de Dó",
+    "categoria": "Arpejos",
+    "tom": "Dó",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Arpejo_Maior_de_Do",
+    "file": "exercicios/Arpejo_Maior_de_Do/Arpejo_Maior_de_Do_player.html",
+    "thumb": "exercicios/Arpejo_Maior_de_Do/thumb.png"
+  },
+  {
+    "title": "Arpejo Maior de Sol",
+    "categoria": "Arpejos",
+    "tom": "Sol",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Arpejo_Maior_de_Sol",
+    "file": "exercicios/Arpejo_Maior_de_Sol/Arpejo_Maior_de_Sol_player.html",
+    "thumb": "exercicios/Arpejo_Maior_de_Sol/thumb.png"
+  },
+  {
+    "title": "Arpejo Maior de Ré",
+    "categoria": "Arpejos",
+    "tom": "Ré",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Arpejo_Maior_de_Re",
+    "file": "exercicios/Arpejo_Maior_de_Re/Arpejo_Maior_de_Re_player.html",
+    "thumb": "exercicios/Arpejo_Maior_de_Re/thumb.png"
+  },
+  {
+    "title": "Arpejo Maior de Fá",
+    "categoria": "Arpejos",
+    "tom": "Fá",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Arpejo_Maior_de_Fa",
+    "file": "exercicios/Arpejo_Maior_de_Fa/Arpejo_Maior_de_Fa_player.html",
+    "thumb": "exercicios/Arpejo_Maior_de_Fa/thumb.png"
+  },
+  {
+    "title": "Arpejo Maior de Sib",
+    "categoria": "Arpejos",
+    "tom": "Sib",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Arpejo_Maior_de_Sib",
+    "file": "exercicios/Arpejo_Maior_de_Sib/Arpejo_Maior_de_Sib_player.html",
+    "thumb": "exercicios/Arpejo_Maior_de_Sib/thumb.png"
+  },
+  {
+    "title": "Arpejo Maior de Lá",
+    "categoria": "Arpejos",
+    "tom": "Lá",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Arpejo_Maior_de_La",
+    "file": "exercicios/Arpejo_Maior_de_La/Arpejo_Maior_de_La_player.html",
+    "thumb": "exercicios/Arpejo_Maior_de_La/thumb.png"
+  },
+  {
+    "title": "Arpejo Menor de Lá",
+    "categoria": "Arpejos",
+    "tom": "Lá menor",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Arpejo_Menor_de_La",
+    "file": "exercicios/Arpejo_Menor_de_La/Arpejo_Menor_de_La_player.html",
+    "thumb": "exercicios/Arpejo_Menor_de_La/thumb.png"
+  },
+  {
+    "title": "Arpejo Menor de Mi",
+    "categoria": "Arpejos",
+    "tom": "Mi menor",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Arpejo_Menor_de_Mi",
+    "file": "exercicios/Arpejo_Menor_de_Mi/Arpejo_Menor_de_Mi_player.html",
+    "thumb": "exercicios/Arpejo_Menor_de_Mi/thumb.png"
+  },
+  {
+    "title": "Arpejo Menor de Ré",
+    "categoria": "Arpejos",
+    "tom": "Ré menor",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Arpejo_Menor_de_Re",
+    "file": "exercicios/Arpejo_Menor_de_Re/Arpejo_Menor_de_Re_player.html",
+    "thumb": "exercicios/Arpejo_Menor_de_Re/thumb.png"
+  },
+  {
+    "title": "Escala Cromática",
+    "categoria": "Cromática",
+    "tom": "cromática",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Escala_Cromatica",
+    "file": "exercicios/Escala_Cromatica/Escala_Cromatica_player.html",
+    "thumb": "exercicios/Escala_Cromatica/thumb.png"
+  },
+  {
+    "title": "Notas Longas (Dó maior)",
+    "categoria": "Notas longas",
+    "tom": "Dó",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 60",
+    "slug": "Notas_Longas_Do_maior",
+    "file": "exercicios/Notas_Longas_Do_maior/Notas_Longas_Do_maior_player.html",
+    "thumb": "exercicios/Notas_Longas_Do_maior/thumb.png"
+  },
+  {
+    "title": "Terças de Dó maior",
+    "categoria": "Intervalos",
+    "tom": "Dó",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Tercas_de_Do_maior",
+    "file": "exercicios/Tercas_de_Do_maior/Tercas_de_Do_maior_player.html",
+    "thumb": "exercicios/Tercas_de_Do_maior/thumb.png"
+  },
+  {
+    "title": "Saltos de Oitava (Dó)",
+    "categoria": "Intervalos",
+    "tom": "Dó",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 76",
+    "slug": "Saltos_de_Oitava_Do",
+    "file": "exercicios/Saltos_de_Oitava_Do/Saltos_de_Oitava_Do_player.html",
+    "thumb": "exercicios/Saltos_de_Oitava_Do/thumb.png"
+  },
+  {
+    "title": "Menor Harmônica de Lá",
+    "categoria": "Escalas",
+    "tom": "Lá menor",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Menor_Harmonica_de_La",
+    "file": "exercicios/Menor_Harmonica_de_La/Menor_Harmonica_de_La_player.html",
+    "thumb": "exercicios/Menor_Harmonica_de_La/thumb.png"
+  },
+  {
+    "title": "Menor Melódica de Lá",
+    "categoria": "Escalas",
+    "tom": "Lá menor",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Menor_Melodica_de_La",
+    "file": "exercicios/Menor_Melodica_de_La/Menor_Melodica_de_La_player.html",
+    "thumb": "exercicios/Menor_Melodica_de_La/thumb.png"
+  },
+  {
+    "title": "Menor Harmônica de Mi",
+    "categoria": "Escalas",
+    "tom": "Mi menor",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Menor_Harmonica_de_Mi",
+    "file": "exercicios/Menor_Harmonica_de_Mi/Menor_Harmonica_de_Mi_player.html",
+    "thumb": "exercicios/Menor_Harmonica_de_Mi/thumb.png"
+  },
+  {
+    "title": "Menor Melódica de Mi",
+    "categoria": "Escalas",
+    "tom": "Mi menor",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Menor_Melodica_de_Mi",
+    "file": "exercicios/Menor_Melodica_de_Mi/Menor_Melodica_de_Mi_player.html",
+    "thumb": "exercicios/Menor_Melodica_de_Mi/thumb.png"
+  },
+  {
+    "title": "Menor Harmônica de Ré",
+    "categoria": "Escalas",
+    "tom": "Ré menor",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Menor_Harmonica_de_Re",
+    "file": "exercicios/Menor_Harmonica_de_Re/Menor_Harmonica_de_Re_player.html",
+    "thumb": "exercicios/Menor_Harmonica_de_Re/thumb.png"
+  },
+  {
+    "title": "Menor Melódica de Ré",
+    "categoria": "Escalas",
+    "tom": "Ré menor",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Menor_Melodica_de_Re",
+    "file": "exercicios/Menor_Melodica_de_Re/Menor_Melodica_de_Re_player.html",
+    "thumb": "exercicios/Menor_Melodica_de_Re/thumb.png"
+  },
+  {
+    "title": "Pentatônica Menor de Lá",
+    "categoria": "Pentatônicas",
+    "tom": "Lá menor",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 84",
+    "slug": "Pentatonica_Menor_de_La",
+    "file": "exercicios/Pentatonica_Menor_de_La/Pentatonica_Menor_de_La_player.html",
+    "thumb": "exercicios/Pentatonica_Menor_de_La/thumb.png"
+  },
+  {
+    "title": "Pentatônica Menor de Mi",
+    "categoria": "Pentatônicas",
+    "tom": "Mi menor",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 84",
+    "slug": "Pentatonica_Menor_de_Mi",
+    "file": "exercicios/Pentatonica_Menor_de_Mi/Pentatonica_Menor_de_Mi_player.html",
+    "thumb": "exercicios/Pentatonica_Menor_de_Mi/thumb.png"
+  },
+  {
+    "title": "Pentatônica Menor de Ré",
+    "categoria": "Pentatônicas",
+    "tom": "Ré menor",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 84",
+    "slug": "Pentatonica_Menor_de_Re",
+    "file": "exercicios/Pentatonica_Menor_de_Re/Pentatonica_Menor_de_Re_player.html",
+    "thumb": "exercicios/Pentatonica_Menor_de_Re/thumb.png"
+  },
+  {
+    "title": "Pentatônica Maior de Dó",
+    "categoria": "Pentatônicas",
+    "tom": "Dó",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 84",
+    "slug": "Pentatonica_Maior_de_Do",
+    "file": "exercicios/Pentatonica_Maior_de_Do/Pentatonica_Maior_de_Do_player.html",
+    "thumb": "exercicios/Pentatonica_Maior_de_Do/thumb.png"
+  },
+  {
+    "title": "Pentatônica Maior de Sol",
+    "categoria": "Pentatônicas",
+    "tom": "Sol",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 84",
+    "slug": "Pentatonica_Maior_de_Sol",
+    "file": "exercicios/Pentatonica_Maior_de_Sol/Pentatonica_Maior_de_Sol_player.html",
+    "thumb": "exercicios/Pentatonica_Maior_de_Sol/thumb.png"
+  },
+  {
+    "title": "Pentatônica Maior de Fá",
+    "categoria": "Pentatônicas",
+    "tom": "Fá",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 84",
+    "slug": "Pentatonica_Maior_de_Fa",
+    "file": "exercicios/Pentatonica_Maior_de_Fa/Pentatonica_Maior_de_Fa_player.html",
+    "thumb": "exercicios/Pentatonica_Maior_de_Fa/thumb.png"
+  },
+  {
+    "title": "Blues de Dó",
+    "categoria": "Pentatônicas",
+    "tom": "Dó",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 84",
+    "slug": "Blues_de_Do",
+    "file": "exercicios/Blues_de_Do/Blues_de_Do_player.html",
+    "thumb": "exercicios/Blues_de_Do/thumb.png"
+  },
+  {
+    "title": "Blues de Sol",
+    "categoria": "Pentatônicas",
+    "tom": "Sol",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 84",
+    "slug": "Blues_de_Sol",
+    "file": "exercicios/Blues_de_Sol/Blues_de_Sol_player.html",
+    "thumb": "exercicios/Blues_de_Sol/thumb.png"
+  },
+  {
+    "title": "Blues de Fá",
+    "categoria": "Pentatônicas",
+    "tom": "Fá",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 84",
+    "slug": "Blues_de_Fa",
+    "file": "exercicios/Blues_de_Fa/Blues_de_Fa_player.html",
+    "thumb": "exercicios/Blues_de_Fa/thumb.png"
+  },
+  {
+    "title": "Tons Inteiros de Dó",
+    "categoria": "Simétricas",
+    "tom": "Dó",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Tons_Inteiros_de_Do",
+    "file": "exercicios/Tons_Inteiros_de_Do/Tons_Inteiros_de_Do_player.html",
+    "thumb": "exercicios/Tons_Inteiros_de_Do/thumb.png"
+  },
+  {
+    "title": "Tons Inteiros de Réb",
+    "categoria": "Simétricas",
+    "tom": "Réb",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Tons_Inteiros_de_Reb",
+    "file": "exercicios/Tons_Inteiros_de_Reb/Tons_Inteiros_de_Reb_player.html",
+    "thumb": "exercicios/Tons_Inteiros_de_Reb/thumb.png"
+  },
+  {
+    "title": "Diminuta de Dó",
+    "categoria": "Simétricas",
+    "tom": "Dó",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Diminuta_de_Do",
+    "file": "exercicios/Diminuta_de_Do/Diminuta_de_Do_player.html",
+    "thumb": "exercicios/Diminuta_de_Do/thumb.png"
+  },
+  {
+    "title": "Diminuta de Ré",
+    "categoria": "Simétricas",
+    "tom": "Ré",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Diminuta_de_Re",
+    "file": "exercicios/Diminuta_de_Re/Diminuta_de_Re_player.html",
+    "thumb": "exercicios/Diminuta_de_Re/thumb.png"
+  },
+  {
+    "title": "Diminuta Dominante de Dó",
+    "categoria": "Simétricas",
+    "tom": "Dó",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Diminuta_Dominante_de_Do",
+    "file": "exercicios/Diminuta_Dominante_de_Do/Diminuta_Dominante_de_Do_player.html",
+    "thumb": "exercicios/Diminuta_Dominante_de_Do/thumb.png"
+  },
+  {
+    "title": "Diminuta Dominante de Sol",
+    "categoria": "Simétricas",
+    "tom": "Sol",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Diminuta_Dominante_de_Sol",
+    "file": "exercicios/Diminuta_Dominante_de_Sol/Diminuta_Dominante_de_Sol_player.html",
+    "thumb": "exercicios/Diminuta_Dominante_de_Sol/thumb.png"
+  },
+  {
+    "title": "Escala Alterada de Dó",
+    "categoria": "Simétricas",
+    "tom": "Dó",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Escala_Alterada_de_Do",
+    "file": "exercicios/Escala_Alterada_de_Do/Escala_Alterada_de_Do_player.html",
+    "thumb": "exercicios/Escala_Alterada_de_Do/thumb.png"
+  },
+  {
+    "title": "Escala Alterada de Sol",
+    "categoria": "Simétricas",
+    "tom": "Sol",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Escala_Alterada_de_Sol",
+    "file": "exercicios/Escala_Alterada_de_Sol/Escala_Alterada_de_Sol_player.html",
+    "thumb": "exercicios/Escala_Alterada_de_Sol/thumb.png"
+  },
+  {
+    "title": "Jônio de Dó",
+    "categoria": "Modos",
+    "tom": "Dó",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Jonio_de_Do",
+    "file": "exercicios/Jonio_de_Do/Jonio_de_Do_player.html",
+    "thumb": "exercicios/Jonio_de_Do/thumb.png"
+  },
+  {
+    "title": "Dórico de Dó",
+    "categoria": "Modos",
+    "tom": "Dó",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Dorico_de_Do",
+    "file": "exercicios/Dorico_de_Do/Dorico_de_Do_player.html",
+    "thumb": "exercicios/Dorico_de_Do/thumb.png"
+  },
+  {
+    "title": "Frígio de Dó",
+    "categoria": "Modos",
+    "tom": "Dó",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Frigio_de_Do",
+    "file": "exercicios/Frigio_de_Do/Frigio_de_Do_player.html",
+    "thumb": "exercicios/Frigio_de_Do/thumb.png"
+  },
+  {
+    "title": "Lídio de Dó",
+    "categoria": "Modos",
+    "tom": "Dó",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Lidio_de_Do",
+    "file": "exercicios/Lidio_de_Do/Lidio_de_Do_player.html",
+    "thumb": "exercicios/Lidio_de_Do/thumb.png"
+  },
+  {
+    "title": "Mixolídio de Dó",
+    "categoria": "Modos",
+    "tom": "Dó",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Mixolidio_de_Do",
+    "file": "exercicios/Mixolidio_de_Do/Mixolidio_de_Do_player.html",
+    "thumb": "exercicios/Mixolidio_de_Do/thumb.png"
+  },
+  {
+    "title": "Eólio de Dó",
+    "categoria": "Modos",
+    "tom": "Dó",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Eolio_de_Do",
+    "file": "exercicios/Eolio_de_Do/Eolio_de_Do_player.html",
+    "thumb": "exercicios/Eolio_de_Do/thumb.png"
+  },
+  {
+    "title": "Lócrio de Dó",
+    "categoria": "Modos",
+    "tom": "Dó",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Locrio_de_Do",
+    "file": "exercicios/Locrio_de_Do/Locrio_de_Do_player.html",
+    "thumb": "exercicios/Locrio_de_Do/thumb.png"
+  },
+  {
+    "title": "Diminuta de Dó#",
+    "categoria": "Simétricas",
+    "tom": "Dó#",
+    "instrument": "Sax Alto (Mib)",
+    "tempo": "♩ = 80",
+    "slug": "Diminuta_de_Dosharp",
+    "file": "exercicios/Diminuta_de_Dosharp/Diminuta_de_Dosharp_player.html",
+    "thumb": "exercicios/Diminuta_de_Dosharp/thumb.png"
+  }
+]

@@ -1,0 +1,249 @@
+{
+  "musica": "Abracadabra",
+  "validados": [
+    2,
+    4,
+    8,
+    15,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    28,
+    30,
+    32,
+    33,
+    34,
+    35,
+    37,
+    38,
+    40,
+    41,
+    42,
+    45,
+    46,
+    49,
+    50,
+    51,
+    52,
+    55,
+    58,
+    59
+  ],
+  "problemas": [
+    {
+      "compasso": 1,
+      "tipos": [],
+      "observacao": "alongamento das notas \".\" faltantes."
+    },
+    {
+      "compasso": 3,
+      "tipos": [
+        "beaming"
+      ],
+      "observacao": "alongamento das notas \".\" faltantes."
+    },
+    {
+      "compasso": 5,
+      "tipos": [],
+      "observacao": "ligadura 3 pra 4 faltante"
+    },
+    {
+      "compasso": 6,
+      "tipos": [
+        "beaming"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 7,
+      "tipos": [
+        "ritmo"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 9,
+      "tipos": [],
+      "observacao": "alongamento das notas \".\" faltantes."
+    },
+    {
+      "compasso": 10,
+      "tipos": [
+        "ritmo"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 11,
+      "tipos": [
+        "beaming",
+        "ligadura"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 12,
+      "tipos": [
+        "ligadura"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 13,
+      "tipos": [],
+      "observacao": "alongamento das notas \".\" faltantes."
+    },
+    {
+      "compasso": 14,
+      "tipos": [
+        "ritmo",
+        "ligadura"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 16,
+      "tipos": [
+        "ritmo",
+        "beaming"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 17,
+      "tipos": [
+        "beaming",
+        "ligadura"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 18,
+      "tipos": [
+        "beaming",
+        "ritmo"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 19,
+      "tipos": [
+        "ligadura"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 27,
+      "tipos": [
+        "beaming"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 29,
+      "tipos": [
+        "ritmo"
+      ],
+      "observacao": "nota 2"
+    },
+    {
+      "compasso": 31,
+      "tipos": [
+        "ligadura"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 36,
+      "tipos": [
+        "nota_errada"
+      ],
+      "observacao": "colocou um bemol onde nao tem, esse ré nao é bemol"
+    },
+    {
+      "compasso": 39,
+      "tipos": [
+        "ligadura"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 43,
+      "tipos": [
+        "ligadura"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 44,
+      "tipos": [
+        "beaming"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 47,
+      "tipos": [
+        "ligadura"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 48,
+      "tipos": [
+        "beaming"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 53,
+      "tipos": [
+        "ritmo",
+        "beaming"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 54,
+      "tipos": [
+        "ritmo",
+        "ligadura",
+        "beaming"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 56,
+      "tipos": [
+        "beaming"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 57,
+      "tipos": [
+        "beaming",
+        "ritmo"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 60,
+      "tipos": [
+        "ligadura"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 61,
+      "tipos": [
+        "ritmo"
+      ],
+      "observacao": ""
+    }
+  ]
+}

@@ -1,0 +1,317 @@
+{
+  "musica": "Firework",
+  "validados": [
+    6,
+    12,
+    45,
+    47,
+    48,
+    53,
+    55,
+    57
+  ],
+  "problemas": [
+    {
+      "compasso": 1,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 2,
+      "tipos": [],
+      "observacao": ""
+    },
+    {
+      "compasso": 3,
+      "tipos": [],
+      "observacao": ""
+    },
+    {
+      "compasso": 4,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 5,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 7,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 9,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 10,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 11,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 13,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 14,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 15,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 16,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 17,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 18,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 19,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 20,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 21,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 22,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 23,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 24,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 25,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 26,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 27,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 28,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 32,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 33,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 34,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 35,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 37,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 38,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 39,
+      "tipos": [
+        "ritmo errado"
+      ],
+      "observacao": "ritmo errado"
+    },
+    {
+      "compasso": 40,
+      "tipos": [],
+      "observacao": "acidente bemol faltante"
+    },
+    {
+      "compasso": 41,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 42,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 43,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 44,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 46,
+      "tipos": [
+        "ritmo errado"
+      ],
+      "observacao": "ritmo errado"
+    },
+    {
+      "compasso": 49,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 50,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 51,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 52,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 54,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    },
+    {
+      "compasso": 56,
+      "tipos": [
+        "ligaduras"
+      ],
+      "observacao": ""
+    }
+  ]
+}

@@ -1,0 +1,2243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sight Reader — Sax Alto</title>
+<style>
+:root {
+  /* Tema claro — alinhado ao design da Biblioteca (bg #faf9f7, accent #c0392b) */
+  --bg-primary: #faf9f7;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f4f2ee;
+  --bg-elevated: #ffffff;
+  --border-subtle: #ececec;
+  --border: #dcdcdc;
+  --border-strong: #c4c0ba;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
+  --accent: #c0392b;
+  --success: #2e7d5b;
+  --success-bg: #eafaf0;
+  --danger: #c0392b;
+  --danger-bg: #fdf0ee;
+  --warning: #e67e22;
+  --warning-bg: #fff7ee;
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --staff-bg: #ffffff;
+  --staff-ink: #2a2a2a;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+body { display: flex; justify-content: center; min-height: 100vh; padding: 24px 16px; }
+.app { width: 100%; max-width: 1300px; }
+.app:focus { outline: none; }
+
+.header { text-align: center; margin-bottom: 1rem; }
+
+/* === Nav Tabs === */
+.tabs {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 2px;
+}
+.tab {
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  border-bottom: 3px solid transparent;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.tab:hover { color: var(--text); background: var(--bg-secondary); }
+.tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  background: var(--bg-secondary);
+}
+.page { display: none; }
+.page.active { display: block; }
+
+/* === Transcritor === */
+.transcriber-header { text-align: center; margin-bottom: 1rem; }
+.transcriber-header h3 { margin: 0 0 4px 0; font-size: 20px; font-weight: 500; }
+.transcriber-sub { color: var(--text-secondary); font-size: 13px; }
+.transcriber-staff-container {
+  max-width: 1180px;
+  margin: 1rem auto;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+.transcriber-staff-container .staff-svg { width: 100%; height: 280px; }
+.transcribed-list {
+  max-width: 1180px;
+  margin: 0.75rem auto;
+  padding: 10px 14px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.transcribed-list-label { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.4px; }
+.transcribed-list-content { font-family: var(--font-mono); font-size: 15px; color: var(--text); }
+.transcribed-list-content em { color: var(--text-secondary); font-style: italic; }
+.transcriber-info {
+  max-width: 1180px;
+  margin: 0.5rem auto;
+  padding: 10px 14px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+.header h2 { margin: 0; font-size: 26px; font-weight: 500; color: var(--text-primary); }
+.header h1 { margin: 2px 0 2px; font-size: 28px; font-weight: 700; letter-spacing: -.4px; color: var(--text-primary); }
+.header .sub { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+.site-nav { display: flex; gap: 16px; justify-content: center; align-items: center; flex-wrap: wrap; font-size: 13px; font-weight: 600; }
+.site-nav a { color: #2e7d5b; text-decoration: none; }
+.site-nav a:hover { text-decoration: underline; }
+.site-nav .here { color: var(--accent); }
+.header kbd { background: var(--bg-elevated); border: 1px solid var(--border); padding: 1px 6px; border-radius: 3px; font-family: var(--font-mono); font-size: 11px; }
+
+.config-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 auto 0.75rem; max-width: 1180px; }
+.config-cell { background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 10px 12px; }
+.config-cell label { font-size: 11px; color: var(--text-secondary); display: block; margin-bottom: 6px; }
+.config-cell select, .config-cell input[type=range] { width: 100%; }
+.config-cell .val { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--text-primary); }
+select { background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 8px; font-size: 13px; font-family: inherit; cursor: pointer; }
+select:focus { outline: none; border-color: var(--border-strong); }
+optgroup { color: var(--text-secondary); font-style: italic; background: var(--bg-secondary); }
+option { color: var(--text-primary); background: var(--bg-elevated); font-style: normal; }
+input[type=range] { -webkit-appearance: none; appearance: none; background: transparent; height: 20px; }
+input[type=range]::-webkit-slider-runnable-track { background: var(--bg-elevated); height: 4px; border-radius: 2px; }
+input[type=range]::-moz-range-track { background: var(--bg-elevated); height: 4px; border-radius: 2px; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; height: 14px; width: 14px; border-radius: 50%; background: var(--text-primary); margin-top: -5px; cursor: pointer; }
+input[type=range]::-moz-range-thumb { height: 14px; width: 14px; border-radius: 50%; background: var(--text-primary); border: none; cursor: pointer; }
+input[type=checkbox] { accent-color: var(--accent); cursor: pointer; }
+
+.chip-row { display: flex; gap: 5px; margin: 0 auto 0.5rem; max-width: 1180px; flex-wrap: wrap; align-items: center; padding: 4px 6px; }
+.chip-label { font-size: 11px; color: var(--text-secondary); margin-right: 6px; flex-shrink: 0; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; }
+.chip { padding: 5px 11px; font-size: 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary); cursor: pointer; font-family: inherit; user-select: none; transition: background 0.1s, border-color 0.1s, color 0.1s; font-weight: 500; }
+.chip:hover { background: var(--bg-tertiary); color: var(--text-primary); border-color: var(--border-strong); }
+.chip.active { background: var(--accent); color: white; border-color: var(--accent); }
+.chip.active:hover { background: #c66848; }
+
+.audio-toggle { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 0.75rem; font-size: 12px; color: var(--text-secondary); }
+.audio-toggle label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 0 auto 0.75rem; max-width: 1180px; }
+.stat { background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 10px 12px; text-align: center; }
+.stat .lbl { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.4px; }
+.stat .val { font-size: 22px; font-weight: 500; margin-top: 2px; }
+.stat.score .val { color: var(--success); }
+.stat.miss .val { color: var(--danger); }
+.stat.timer .val { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.stat.timer.warning .val { color: var(--warning, #e0a000); }
+.stat.timer.critical .val { color: var(--danger); animation: pulse 0.8s ease-in-out infinite; }
+.stat.big .val { font-size: 30px; font-weight: 600; }
+.stat-line { text-align: center; color: var(--text-secondary); font-size: 13px; margin: -4px auto 0.75rem; max-width: 1180px; }
+.stat-line span { margin: 0 10px; }
+.stat-line b { color: var(--text); font-weight: 500; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+
+/* === Game Over overlay === */
+.gameover-overlay {
+  position: absolute; inset: 0;
+  display: none;
+  align-items: center; justify-content: center;
+  background: rgba(20, 18, 16, 0.88);
+  backdrop-filter: blur(6px);
+  z-index: 50;
+  border-radius: var(--radius-md);
+}
+.gameover-overlay.show { display: flex; }
+.gameover-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg, 12px);
+  padding: 28px 36px;
+  text-align: center;
+  min-width: 360px;
+  max-width: 520px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.gameover-card .title { font-size: 26px; font-weight: 600; margin-bottom: 4px; }
+.gameover-card .subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; }
+.gameover-card .score-big { font-size: 56px; font-weight: 700; color: var(--success); line-height: 1; margin-bottom: 4px; font-variant-numeric: tabular-nums; }
+.gameover-card .score-lbl { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 18px; }
+.gameover-card .new-record { font-size: 14px; color: #ffd166; margin-bottom: 14px; font-weight: 500; }
+.gameover-card .new-record.hidden { display: none; }
+.gameover-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 16px; margin-bottom: 22px; font-size: 14px; }
+.gameover-stats .gs-item { display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-subtle); padding-bottom: 6px; }
+.gameover-stats .gs-lbl { color: var(--text-secondary); }
+.gameover-stats .gs-val { color: var(--text); font-weight: 500; font-variant-numeric: tabular-nums; }
+
+.note-badge-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 0 auto 0.75rem;
+  max-width: 1180px;
+}
+.note-badge-label {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  font-weight: 500;
+}
+.note-badge {
+  min-width: 100px;
+  min-height: 56px;
+  padding: 8px 20px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.12s, box-shadow 0.15s;
+  font-family: var(--font-sans);
+  line-height: 1;
+}
+.note-badge.active {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(192, 57, 43, 0.10);
+  transform: scale(1.04);
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.20);
+}
+.note-badge .oct-sm {
+  font-size: 18px;
+  opacity: 0.7;
+  margin-left: 2px;
+  vertical-align: super;
+}
+.note-badge .badge-pt {
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1;
+}
+.note-badge .badge-en {
+  font-size: 16px;
+  opacity: 0.55;
+  font-family: var(--font-mono);
+  margin-left: 12px;
+  letter-spacing: 0.5px;
+  border-left: 1px solid var(--border);
+  padding-left: 12px;
+  font-weight: 500;
+}
+.note-badge.from-mic .badge-pt { color: #c2e0c4; }
+.note-badge.from-mic .badge-en { color: #c2e0c4; }
+.note-badge-empty {
+  font-size: 26px;
+  opacity: 0.35;
+}
+
+/* ============ LAYOUT EASY com 15 botões empilhados ============ */
+.easy-layout {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+  margin: 0 auto 0.75rem;
+  max-width: 1180px;
+  justify-content: center;
+}
+.easy-buttons-col {
+  width: 130px;
+  flex-shrink: 0;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 8px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.staff-container-flex {
+  flex: 1;
+  min-width: 0;
+  background: var(--staff-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+}
+.easy-btn-vert {
+  flex: 1;
+  min-height: 26px;
+  font-size: 15px;
+  font-weight: 500;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.08s;
+  user-select: none;
+  color: var(--text-primary);
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  gap: 4px;
+}
+.easy-btn-vert:hover { background: var(--bg-tertiary); border-color: var(--border-strong); }
+.easy-btn-vert:active, .easy-btn-vert.key-pressed { transform: scale(0.94); background: var(--bg-tertiary); }
+.easy-btn-vert.flash-correct { background: var(--success-bg); border-color: var(--success); color: var(--success); }
+.easy-btn-vert.flash-wrong { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
+.easy-btn-vert .letter {
+  font-size: 15px;
+  font-weight: 500;
+}
+.easy-btn-vert .oct {
+  font-size: 11px;
+  opacity: 0.6;
+  margin-left: -2px;
+}
+/* Marcador de oitava por cor lateral sutil */
+.easy-btn-vert.oct-1 { border-left: 3px solid #cbc6bf; }
+.easy-btn-vert.oct-2 { border-left: 3px solid #8a857e; }
+.easy-btn-vert.oct-3 { border-left: 3px solid #45413b; }
+
+.staff-svg { display: block; width: 100%; height: 460px; }
+
+.controls-row { display: flex; gap: 8px; justify-content: center; align-items: center; margin-bottom: 0.75rem; }
+.btn { padding: 10px 18px; font-size: 13px; border-radius: var(--radius-md); cursor: pointer; border: 1px solid var(--border); background: var(--bg-elevated); color: var(--text-primary); font-weight: 500; font-family: inherit; }
+.btn:hover { background: var(--bg-tertiary); }
+.btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
+.btn.primary:hover { background: #c66848; }
+.btn.warn { background: var(--warning-bg); color: var(--warning); border-color: var(--warning); }
+.btn .kbd-hint { font-size: 10px; opacity: 0.75; margin-left: 6px; font-family: var(--font-mono); }
+.btn.active-mic { background: var(--accent); color: white; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.2); }
+.btn.active-mic:hover { background: #c66848; }
+.btn.disabled-key { opacity: 0.4; cursor: not-allowed; }
+.btn.disabled-key:hover { background: var(--bg-secondary); }
+
+.mic-status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 0 auto 0.5rem;
+  padding: 8px 14px;
+  max-width: 1180px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.mic-status-label { font-weight: 500; color: var(--accent); }
+.mic-status-item { display: inline-flex; align-items: center; gap: 4px; }
+.mic-sublbl { color: var(--text-tertiary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; }
+.mic-status #mic-concert, .mic-status #mic-written { font-weight: 600; color: var(--text-primary); min-width: 50px; display: inline-block; text-align: center; }
+.mic-en { font-family: var(--font-mono); font-size: 11px; opacity: 0.6; margin-left: 4px; color: var(--text-tertiary); }
+.mic-cents { font-family: var(--font-mono); font-size: 11px; color: var(--text-tertiary); }
+.mic-cents.in-tune { color: var(--success); }
+.mic-cents.flat { color: var(--warning); }
+.mic-cents.sharp { color: var(--warning); }
+.mic-hint { color: var(--warning); font-size: 12px; padding-left: 8px; border-left: 1px solid var(--border); }
+
+/* Afinador (medidor visual de cents) */
+.tuner-meter { display: inline-flex; flex-direction: column; align-items: center; gap: 3px; padding: 0 4px; border-left: 1px solid var(--border); padding-left: 12px; }
+.tuner-meter .meter-bar {
+  position: relative;
+  display: block;
+  width: 140px;
+  height: 8px;
+  background: linear-gradient(90deg,
+    #c0392b 0%, #c0392b 20%,
+    #e67e22 35%, #e67e22 42%,
+    #2e7d5b 48%, #2e7d5b 52%,
+    #e67e22 58%, #e67e22 65%,
+    #c0392b 80%, #c0392b 100%);
+  border-radius: 4px;
+  border: 1px solid var(--border-strong);
+}
+.tuner-meter .meter-center {
+  position: absolute;
+  left: 50%;
+  top: -3px;
+  bottom: -3px;
+  width: 1px;
+  background: rgba(0, 0, 0, 0.18);
+  transform: translateX(-0.5px);
+}
+.tuner-meter .meter-needle {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 4px;
+  left: 50%;
+  background: var(--text-primary);
+  border-radius: 2px;
+  box-shadow: 0 0 6px rgba(255,255,255,0.8), 0 0 2px rgba(0,0,0,0.6);
+  transform: translateX(-2px);
+  transition: left 0.08s linear, opacity 0.15s;
+  opacity: 0;
+}
+.tuner-meter .meter-labels {
+  display: flex;
+  justify-content: space-between;
+  width: 140px;
+  font-size: 9px;
+  font-family: var(--font-mono);
+  color: var(--text-tertiary);
+  line-height: 1;
+}
+
+.hit-zone-info { font-size: 11px; color: var(--text-tertiary); text-align: center; margin: 4px 0; font-style: italic; }
+.kbd-info { font-size: 11px; color: var(--text-tertiary); text-align: center; margin-top: 8px; }
+.kbd-info kbd { background: var(--bg-elevated); padding: 2px 6px; border-radius: 3px; font-family: var(--font-mono); font-size: 11px; border: 1px solid var(--border); color: var(--text-secondary); }
+</style>
+</head>
+<body>
+
+<div class="app" tabindex="0" id="app-root">
+  <div class="header">
+    <nav class="site-nav">
+      <a href="Biblioteca.html">← Biblioteca</a>
+      <a href="Exercicios.html">Exercícios</a>
+      <a href="Validador.html">Validador</a>
+      <span class="here">🎮 Sight Reader</span>
+    </nav>
+    <h1>Sight Reader</h1>
+    <div class="sub">Treino de leitura à primeira vista · arpejos, escalas e transcrição — som de sax</div>
+  </div>
+
+  <nav class="tabs">
+    <button class="tab active" data-page="sight-reader">📖 Sight Reader</button>
+    <button class="tab" data-page="transcriber">🎼 Transcritor</button>
+  </nav>
+
+  <div id="page-sight-reader" class="page active">
+
+  <div class="chip-row">
+    <span class="chip-label">Modo:</span>
+    <button class="chip" data-mode="aleatorias">Aleatórias</button>
+    <button class="chip" data-mode="escala">Escala</button>
+    <button class="chip active" data-mode="arpejos">Arpejos</button>
+    <button class="chip" data-mode="padrao3">Padrão 3ªs</button>
+  </div>
+
+  <div class="chip-row">
+    <span class="chip-label">Oitavas:</span>
+    <button class="chip active" data-oct="1">8ª 1 (grave)</button>
+    <button class="chip active" data-oct="2">8ª 2 (médio)</button>
+    <button class="chip active" data-oct="3">8ª 3 (agudo)</button>
+  </div>
+
+  <div class="chip-row" id="saltos-row" style="display:none;">
+    <span class="chip-label">Saltos:</span>
+    <button class="chip active" data-grau="1">1°</button>
+    <button class="chip" data-grau="2">2°</button>
+    <button class="chip" data-grau="3">3°</button>
+    <button class="chip" data-grau="4">4°</button>
+    <button class="chip" data-grau="5">5°</button>
+    <button class="chip" data-grau="99">6+°</button>
+  </div>
+
+  <div class="chip-row">
+    <span class="chip-label">Espaçamento:</span>
+    <button class="chip active" data-bpn="2">Lento</button>
+    <button class="chip" data-bpn="1.5">Médio</button>
+    <button class="chip" data-bpn="1">Denso</button>
+    <button class="chip" data-bpn="0.5">Muito denso</button>
+  </div>
+
+  <div class="config-row">
+    <div class="config-cell">
+      <label for="tom-sel">Tonalidade</label>
+      <select id="tom-sel"></select>
+    </div>
+    <div class="config-cell">
+      <label>Velocidade <span class="val" id="bpm-val">60</span> BPM</label>
+      <input type="range" id="bpm-range" min="40" max="180" step="5" value="60">
+    </div>
+  </div>
+
+  <div class="audio-toggle">
+    <label><input type="checkbox" id="audio-on" checked> 🔊 Tocar som ao pressionar tecla/botão</label>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat timer" id="stat-timer-card"><div class="lbl">⏱ Tempo</div><div class="val" id="stat-timer">1:00</div></div>
+    <div class="stat big score"><div class="lbl">Pontuação</div><div class="val" id="stat-score">0</div></div>
+    <div class="stat"><div class="lbl">Recorde (modo)</div><div class="val" id="stat-best-score">0</div></div>
+    <div class="stat"><div class="lbl">Combo</div><div class="val" id="stat-combo">0🔥</div></div>
+  </div>
+  <div class="stat-line">
+    <span>Acertos: <b id="stat-hits">0</b></span>
+    <span>Erros: <b id="stat-misses">0</b></span>
+    <span>Melhor combo: <b id="stat-best">0</b></span>
+  </div>
+
+  <div class="note-badge-container">
+    <div class="note-badge-label">Tecla pressionada</div>
+    <div class="note-badge" id="note-badge"><span class="note-badge-empty">—</span></div>
+  </div>
+
+  <div style="position: relative;">
+    <div class="easy-layout" id="easy-layout">
+      <div class="easy-buttons-col" id="easy-buttons" style="height: 460px;"></div>
+      <div class="staff-container-flex">
+        <svg class="staff-svg" id="staff-easy" viewBox="0 0 600 240" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" style="height: 460px;"></svg>
+      </div>
+    </div>
+
+    <div class="gameover-overlay" id="gameover-overlay">
+      <div class="gameover-card">
+        <div class="title">⏱ Tempo!</div>
+        <div class="subtitle" id="gameover-mode-label">Modo: Arpejos • Sol Maior</div>
+        <div class="new-record hidden" id="gameover-record">⭐ Novo recorde!</div>
+        <div class="score-big" id="gameover-score">0</div>
+        <div class="score-lbl">Pontuação final</div>
+        <div class="gameover-stats">
+          <div class="gs-item"><span class="gs-lbl">Acertos</span><span class="gs-val" id="gameover-hits">0</span></div>
+          <div class="gs-item"><span class="gs-lbl">Erros</span><span class="gs-val" id="gameover-misses">0</span></div>
+          <div class="gs-item"><span class="gs-lbl">Precisão</span><span class="gs-val" id="gameover-accuracy">—</span></div>
+          <div class="gs-item"><span class="gs-lbl">Melhor combo</span><span class="gs-val" id="gameover-best-combo">0</span></div>
+        </div>
+        <button class="btn primary" id="btn-play-again">▶ Jogar de novo</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hit-zone-info">A linha laranja é a zona de ataque.</div>
+
+  <div class="controls-row">
+    <button class="btn primary" id="btn-start">▶ Iniciar <span class="kbd-hint">[espaço]</span></button>
+    <button class="btn warn" id="btn-pause" style="display:none;">⏸ Pausar <span class="kbd-hint">[espaço]</span></button>
+    <button class="btn" id="btn-reset">↻ Resetar <span class="kbd-hint">[R]</span></button>
+    <button class="btn" id="btn-mic">🎤 Tocar no sax</button>
+    <button class="btn" id="btn-speech" title="Solfeje o nome da nota (dó, ré, mi...) — só em Dó Maior">🎙️ Solfejar</button>
+  </div>
+
+  <div class="mic-status" id="speech-status" style="display:none;">
+    <span class="mic-status-label">🎙️ Solfejando</span>
+    <span class="mic-hint">Fale <strong>dó</strong> · <strong>ré</strong> · <strong>mi</strong> · <strong>fá</strong> · <strong>sol</strong> · <strong>lá</strong> · <strong>si</strong> — a nota vira verde independente da oitava</span>
+  </div>
+
+  <div class="mic-status" id="mic-status" style="display:none;">
+    <span class="mic-status-label">🎤 Detectado</span>
+    <span class="mic-status-item">
+      <span class="mic-sublbl">Concert:</span>
+      <span id="mic-concert">—</span>
+      <span class="mic-en" id="mic-concert-en"></span>
+    </span>
+    <span class="mic-status-item">
+      <span class="mic-sublbl">Sax (escrito):</span>
+      <span id="mic-written">—</span>
+      <span class="mic-en" id="mic-written-en"></span>
+    </span>
+    <span class="tuner-meter">
+      <span class="mic-sublbl">Afinador:</span>
+      <span class="meter-bar">
+        <span class="meter-center"></span>
+        <span class="meter-needle" id="meter-needle"></span>
+      </span>
+      <span class="meter-labels"><span>-50¢</span><span>0</span><span>+50¢</span></span>
+    </span>
+    <span class="mic-cents" id="mic-cents"></span>
+    <span class="mic-hint" id="mic-hint" style="display:none;">⚠ Clique <strong>Iniciar</strong> pra jogar</span>
+  </div>
+
+  <div class="kbd-info">
+    <kbd>espaço</kbd> iniciar/pausar • <kbd>R</kbd> resetar
+  </div>
+  </div> <!-- fecha #page-sight-reader -->
+
+  <div id="page-transcriber" class="page">
+    <div class="transcriber-header">
+      <h3>🎼 Toque no sax → veja no pentagrama</h3>
+      <div class="transcriber-sub">Ative o microfone e comece a tocar. Cada nota reconhecida aparece escrita na partitura.</div>
+    </div>
+
+    <div class="controls-row">
+      <button class="btn primary" id="btn-mic-tr">🎤 Ligar sax</button>
+      <button class="btn" id="btn-clear-tr">🗑️ Limpar</button>
+    </div>
+
+    <div class="mic-status" id="mic-status-tr" style="display:none;">
+      <span class="mic-status-label">🎤 Sax</span>
+      <span class="mic-status-item">
+        <span class="mic-sublbl">Concert:</span>
+        <span id="mic-concert-tr">—</span>
+        <span class="mic-en" id="mic-concert-en-tr"></span>
+      </span>
+      <span class="mic-status-item">
+        <span class="mic-sublbl">Sax (escrito):</span>
+        <span id="mic-written-tr">—</span>
+        <span class="mic-en" id="mic-written-en-tr"></span>
+      </span>
+      <span class="tuner-meter">
+        <span class="meter-bar">
+          <span class="meter-center"></span>
+          <span class="meter-needle" id="meter-needle-tr"></span>
+        </span>
+        <span class="meter-labels"><span>-50¢</span><span>0</span><span>+50¢</span></span>
+      </span>
+      <span class="mic-cents" id="mic-cents-tr"></span>
+    </div>
+
+    <div class="transcriber-staff-container">
+      <svg class="staff-svg" id="transcriber-staff" viewBox="0 0 600 240" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+
+    <div class="transcribed-list" id="transcribed-list">
+      <span class="transcribed-list-label">Notas transcritas:</span>
+      <span class="transcribed-list-content" id="transcribed-list-content"><em>—</em></span>
+    </div>
+
+    <div class="transcriber-info">
+      Range: Dó¹ (C4) até Fá³ (F6) na notação escrita do sax alto. Notas fora do range são ignoradas.
+      Sustenidos/bemóis mostrados com acidente (♯/♭) — não usa armadura de clave.
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const STAFF_LINES = [100, 116, 132, 148, 164];
+  const NOTE_RX = 7;
+  const NOTE_RY = 5.5;
+
+  const STAFF_INK = '#2a2a2a';
+  const STAFF_BG = '#ffffff';
+  const COLOR_NOTE_DEFAULT = '#2a2a2a';
+  const COLOR_NOTE_HIT = '#2e7d5b';
+  const COLOR_NOTE_MISS = '#c0392b';
+  const COLOR_HIT_LINE = '#c0392b';
+  const COLOR_PREVIEW = '#c0392b'; // accent (vermelho da Biblioteca) pra preview ao segurar botão
+
+  const NATURAL_POSITIONS = {
+    // Oitava 1 (grave)
+    'Dó¹':  { posY: 180, octIdx: 1 },
+    'Ré¹':  { posY: 172, octIdx: 1 },
+    'Mi¹':  { posY: 164, octIdx: 1 },
+    'Fá¹':  { posY: 156, octIdx: 1 },
+    'Sol¹': { posY: 148, octIdx: 1 },
+    'Lá¹':  { posY: 140, octIdx: 1 },
+    'Si¹':  { posY: 132, octIdx: 1 },
+    // Oitava 2 (médio)
+    'Dó²':  { posY: 124, octIdx: 2 },
+    'Ré²':  { posY: 116, octIdx: 2 },
+    'Mi²':  { posY: 108, octIdx: 2 },
+    'Fá²':  { posY: 100, octIdx: 2 },
+    'Sol²': { posY: 92,  octIdx: 2 },
+    'Lá²':  { posY: 84,  octIdx: 2 },
+    'Si²':  { posY: 76,  octIdx: 2 },
+    // Oitava 3 (agudo) — Dó³ até Fá³
+    'Dó³':  { posY: 68,  octIdx: 3 },
+    'Ré³':  { posY: 60,  octIdx: 3 },
+    'Mi³':  { posY: 52,  octIdx: 3 },
+    'Fá³':  { posY: 44,  octIdx: 3 },
+  };
+
+  const SHARP_POS = { 'Fá':100,'Dó':124,'Sol':92,'Ré':116,'Lá':140,'Mi':108,'Si':132 };
+  const FLAT_POS  = { 'Si':132,'Mi':108,'Lá':140,'Ré':116,'Sol':148,'Dó':124,'Fá':156 };
+
+  const KEYS = [
+    { id: 'CM', name: 'Dó Maior',     tonic:'Dó', mode:'M', sharps:[], flats:[] },
+    { id: 'GM', name: 'Sol Maior',    tonic:'Sol',mode:'M', sharps:['Fá'], flats:[] },
+    { id: 'DM', name: 'Ré Maior',     tonic:'Ré', mode:'M', sharps:['Fá','Dó'], flats:[] },
+    { id: 'AM', name: 'Lá Maior',     tonic:'Lá', mode:'M', sharps:['Fá','Dó','Sol'], flats:[] },
+    { id: 'EM', name: 'Mi Maior',     tonic:'Mi', mode:'M', sharps:['Fá','Dó','Sol','Ré'], flats:[] },
+    { id: 'BM', name: 'Si Maior',     tonic:'Si', mode:'M', sharps:['Fá','Dó','Sol','Ré','Lá'], flats:[] },
+    { id: 'FM', name: 'Fá Maior',     tonic:'Fá', mode:'M', sharps:[], flats:['Si'] },
+    { id: 'BbM',name: 'Si♭ Maior',    tonic:'Si♭',mode:'M', sharps:[], flats:['Si','Mi'] },
+    { id: 'EbM',name: 'Mi♭ Maior',    tonic:'Mi♭',mode:'M', sharps:[], flats:['Si','Mi','Lá'] },
+    { id: 'Am', name: 'Lá menor',     tonic:'Lá', mode:'m', sharps:[], flats:[] },
+    { id: 'Em', name: 'Mi menor',     tonic:'Mi', mode:'m', sharps:['Fá'], flats:[] },
+    { id: 'Bm', name: 'Si menor',     tonic:'Si', mode:'m', sharps:['Fá','Dó'], flats:[] },
+    { id: 'F#m',name: 'Fá# menor',    tonic:'Fá#',mode:'m', sharps:['Fá','Dó','Sol'], flats:[] },
+    { id: 'C#m',name: 'Dó# menor',    tonic:'Dó#',mode:'m', sharps:['Fá','Dó','Sol','Ré'], flats:[] },
+    { id: 'Dm', name: 'Ré menor',     tonic:'Ré', mode:'m', sharps:[], flats:['Si'] },
+    { id: 'Gm', name: 'Sol menor',    tonic:'Sol',mode:'m', sharps:[], flats:['Si','Mi'] },
+    { id: 'Cm', name: 'Dó menor',     tonic:'Dó', mode:'m', sharps:[], flats:['Si','Mi','Lá'] },
+  ];
+
+  const LETTER_TO_SEMITONE = {
+    'Dó':0,'Dó#':1,'Ré♭':1,'Ré':2,'Ré#':3,'Mi♭':3,'Mi':4,'Fá':5,
+    'Fá#':6,'Sol♭':6,'Sol':7,'Sol#':8,'Lá♭':8,'Lá':9,'Lá#':10,'Si♭':10,'Si':11
+  };
+
+  function getFrequencyForNote(displayLetter, octIdx) {
+    const sem = LETTER_TO_SEMITONE[displayLetter];
+    if (sem === undefined) return 440;
+    // baseHz = Mib4 (311.13 Hz) = som concert que o sax alto produz ao tocar "Dó²" escrito.
+    // Antes era 261.63 (C4 piano), agora respeita a transposição Eb do sax alto.
+    const baseHz = 311.127;
+    let octMult;
+    if (octIdx === 1) octMult = 0.5;
+    else if (octIdx === 3) octMult = 2;
+    else octMult = 1;
+    return baseHz * octMult * Math.pow(2, sem / 12);
+  }
+
+  let audioCtx = null;
+  function getAudioCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+  function playSaxNote(freq, duration = 0.5) {
+    if (!state.audioOn) return;
+    try {
+      const ctx = getAudioCtx();
+      const now = ctx.currentTime;
+      const end = now + duration;
+      const o1 = ctx.createOscillator(); o1.type='sawtooth'; o1.frequency.setValueAtTime(freq, now);
+      const o2 = ctx.createOscillator(); o2.type='sawtooth'; o2.frequency.setValueAtTime(freq*2, now);
+      const o3 = ctx.createOscillator(); o3.type='triangle'; o3.frequency.setValueAtTime(freq, now);
+      const lfo = ctx.createOscillator(); lfo.type='sine'; lfo.frequency.setValueAtTime(5, now);
+      const lfoG = ctx.createGain();
+      lfoG.gain.setValueAtTime(0, now);
+      lfoG.gain.linearRampToValueAtTime(freq * 0.008, now + 0.15);
+      lfo.connect(lfoG); lfoG.connect(o1.frequency); lfoG.connect(o3.frequency);
+      const m1 = ctx.createGain(); m1.gain.value=0.5;
+      const m2 = ctx.createGain(); m2.gain.value=0.15;
+      const m3 = ctx.createGain(); m3.gain.value=0.35;
+      o1.connect(m1); o2.connect(m2); o3.connect(m3);
+      const filt = ctx.createBiquadFilter(); filt.type='lowpass';
+      const cutoff = Math.min(4500, freq*6);
+      filt.frequency.setValueAtTime(cutoff*0.6, now);
+      filt.frequency.linearRampToValueAtTime(cutoff, now+0.05);
+      filt.Q.value=4;
+      m1.connect(filt); m2.connect(filt); m3.connect(filt);
+      const env = ctx.createGain();
+      env.gain.setValueAtTime(0, now);
+      env.gain.linearRampToValueAtTime(0.85, now+0.04);
+      env.gain.linearRampToValueAtTime(0.51, now+0.12);
+      env.gain.setValueAtTime(0.51, end-0.12);
+      env.gain.linearRampToValueAtTime(0, end);
+      filt.connect(env);
+      const master = ctx.createGain(); master.gain.value=0.3;
+      env.connect(master); master.connect(ctx.destination);
+      o1.start(now); o2.start(now); o3.start(now); lfo.start(now);
+      o1.stop(end+0.05); o2.stop(end+0.05); o3.stop(end+0.05); lfo.stop(end+0.05);
+    } catch(e) {}
+  }
+
+  function getLetterFromName(n) { return n.replace(/[¹²³]/g,''); }
+  function buildScaleNotes(key) {
+    const pattern = key.mode === 'M' ? [0,2,4,5,7,9,11] : [0,2,3,5,7,8,10];
+    const chromSharp = ['Dó','Dó#','Ré','Ré#','Mi','Fá','Fá#','Sol','Sol#','Lá','Lá#','Si'];
+    const chromFlat  = ['Dó','Ré♭','Ré','Mi♭','Mi','Fá','Sol♭','Sol','Lá♭','Lá','Si♭','Si'];
+    const useFlat = key.flats.length > 0 || key.tonic.includes('♭');
+    const chrom = useFlat ? chromFlat : chromSharp;
+    let tonicIdx = chrom.indexOf(key.tonic);
+    if (tonicIdx === -1) {
+      const alt = useFlat ? chromSharp : chromFlat;
+      tonicIdx = alt.indexOf(key.tonic);
+    }
+    const scaleLetters = pattern.map(s => chrom[(tonicIdx + s) % 12]);
+    const result = [];
+    let id = 0;
+    for (const [posName, posData] of Object.entries(NATURAL_POSITIONS)) {
+      // Filtro por oitava (chips "Oitavas"): só considera se a oitava está permitida
+      if (state.allowedOctaves && !state.allowedOctaves.includes(posData.octIdx)) continue;
+      const letter = getLetterFromName(posName);
+      const octSuffix = posData.octIdx === 1 ? '¹' : (posData.octIdx === 2 ? '²' : '³');
+      const isSharp = key.sharps.includes(letter);
+      const isFlat = key.flats.includes(letter);
+      let displayLetter;
+      if (isSharp) displayLetter = letter + '#';
+      else if (isFlat) displayLetter = letter + '♭';
+      else displayLetter = letter;
+      if (scaleLetters.includes(displayLetter)) {
+        result.push({
+          id: id++, letter, displayLetter,
+          name: displayLetter + octSuffix,
+          posY: posData.posY,
+          octIdx: posData.octIdx,
+        });
+      }
+    }
+    return result;
+  }
+
+  let state = {
+    keyId: 'GM', keyObj: null, notes: [],
+    bpm: 60, audioOn: true,
+    beatsPerNote: 2,
+    studyMode: 'arpejos',     // 'aleatorias' | 'escala' | 'arpejos' | 'padrao3'
+    allowedGraus: [1],        // usado em modo 'aleatorias'
+    allowedOctaves: [1, 2, 3], // filtro global de oitavas do jogo
+    // === Sequência (usada em escala, arpejos, padrao3) ===
+    sequenceList: [],         // índices em state.notes na ordem (ascendente)
+    sequenceIdx: 0,
+    sequenceDirection: 1,     // 1 = subindo, -1 = descendo
+    running: false, paused: false,
+    activeNotes: [], nextNoteId: 1, lastSpawnTime: 0,
+    lastSpawnedNoteIdx: -1,
+    hits: 0, misses: 0, combo: 0, bestCombo: 0,
+    // === Gamificação: round de 60s com pontuação ===
+    gameDuration: 60,           // segundos por round
+    timeRemaining: 60,          // restante (atualizado no gameLoop)
+    score: 0,                   // pontuação atual do round
+    bestScores: { aleatorias: 0, escala: 0, arpejos: 0, padrao3: 0 },
+    // === Solfejo: reconhecimento de voz (só em Dó Maior) ===
+    speechEnabled: false,
+    speechRecognition: null,
+    speechLastFireTime: 0,
+    speechLastNote: null,
+    // === Transcritor ===
+    currentPage: 'sight-reader',   // 'sight-reader' | 'transcriber'
+    transcribedNotes: [],          // array de { letter, accidental, octIdx, posY, midi }
+    lastFrameTime: 0, rafId: null,
+    easyButtons: [],
+    uniqueLetters: [],
+    previewNote: null,
+    // === Mic / detecção sax ===
+    micEnabled: false,
+    micStream: null,
+    micAudioContext: null,
+    micAnalyser: null,
+    micBuffer: null,
+    micDetectInterval: null,
+    micEnergyState: 'silent',   // 'silent' ou 'voiced'
+    micOnsetPending: false,     // attack detectado, aguardando pitch resolver
+    micLastFiredMidi: null,     // último MIDI que disparou hit (pra evitar refire mesmo MIDI)
+    micLastFireTime: 0,         // timestamp do último fire (debounce)
+    micCurrentMidi: null,       // MIDI atual sendo detectado (track de estabilidade)
+    micStableFrames: 0,         // frames consecutivos com mesmo MIDI
+  };
+
+  const HIT_ZONE_X = 110;
+  const SPAWN_X = 600;
+  const HIT_TOLERANCE = 35;
+  const PREVIEW_X = 110; // preview aparece sobre a linha tracejada (= HIT_ZONE_X)
+  const LEAD_TIME_BEATS = 4; // beats de "preview" entre spawn e hit zone (fixo)
+  const VISUAL_DISTANCE = SPAWN_X - HIT_ZONE_X; // 490px
+
+  // === Constantes de detecção via microfone ===
+  const ALTO_SAX_TRANSPOSE = 9;       // sax alto Eb: written = sounding + 9 semitons
+  const MIC_DETECT_INTERVAL_MS = 50;  // taxa de amostragem da detecção
+  const MIC_RMS_THRESHOLD = 0.008;    // limiar de pitch detection (autoCorrelate) — mais sensível
+  // Detecção de onset por envelope de energia
+  const MIC_ONSET_RMS_HIGH = 0.022;   // acima disso = som claro presente (era 0.035)
+  const MIC_ONSET_RMS_LOW  = 0.010;   // abaixo disso = silêncio/respiração (era 0.018)
+  const MIC_MIDI_TOLERANCE = 1;       // ±1 semitom no match (perdoa desafinação)
+  const MIC_FIRE_DEBOUNCE_MS = 90;    // mínimo entre dois fires consecutivos
+  const MIC_PITCH_CHANGE_STABLE_FRAMES = 2; // frames de pitch estável antes de disparar em mudança
+
+  // Pitch class por displayLetter (suporta # e ♭ em ambas formas)
+  const NOTE_PC = {
+    'Dó': 0, 'Dó#': 1, 'Réb': 1, 'Ré♭': 1,
+    'Ré': 2, 'Ré#': 3, 'Mib': 3, 'Mi♭': 3,
+    'Mi': 4, 'Fáb': 4, 'Fá♭': 4,
+    'Fá': 5, 'Mi#': 5, 'Fá#': 6, 'Solb': 6, 'Sólb': 6, 'Sol♭': 6, 'Sól♭': 6,
+    'Sol': 7, 'Sol#': 8, 'Láb': 8, 'Lá♭': 8,
+    'Lá': 9, 'Lá#': 10, 'Sib': 10, 'Si♭': 10,
+    'Si': 11, 'Dób': 11, 'Dó♭': 11,
+  };
+  // Solfège PT-BR com sustenidos (pra mostrar a nota detectada)
+  const SOLFEGE_FROM_PC = ['Dó','Dó#','Ré','Ré#','Mi','Fá','Fá#','Sol','Sol#','Lá','Lá#','Si'];
+  // ABC inglês equivalente
+  const ABC_FROM_PC = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+  // Mapeamento PT → EN (pra display do badge)
+  const PT_TO_EN = {
+    'Dó':'C','Dó#':'C#','Réb':'Db','Ré♭':'Db',
+    'Ré':'D','Ré#':'D#','Mib':'Eb','Mi♭':'Eb',
+    'Mi':'E','Mi#':'E#','Fáb':'Fb','Fá♭':'Fb',
+    'Fá':'F','Fá#':'F#','Solb':'Gb','Sólb':'Gb','Sol♭':'Gb','Sól♭':'Gb',
+    'Sol':'G','Sol#':'G#','Láb':'Ab','Lá♭':'Ab',
+    'Lá':'A','Lá#':'A#','Sib':'Bb','Si♭':'Bb',
+    'Si':'B','Dób':'Cb','Dó♭':'Cb',
+  };
+
+  function getPixelSpeed() {
+    return VISUAL_DISTANCE * state.bpm / (60 * LEAD_TIME_BEATS);
+  }
+  function getSpawnIntervalMs() {
+    return (60 / state.bpm) * state.beatsPerNote * 1000;
+  }
+
+  function isGrauAllowed(dist) {
+    return state.allowedGraus.some(g => g === 99 ? dist >= 6 : dist === g);
+  }
+
+  // Constrói a sequência de notas pra modos baseados em sequência (escala/arpejos/padrao3).
+  // Modo 'aleatorias' não usa sequência (spawnNote sorteia random).
+  function buildModeSequence() {
+    state.sequenceList = [];
+    state.sequenceIdx = 0;
+    state.sequenceDirection = 1;
+
+    if (!state.keyObj || !state.notes || state.notes.length === 0) return;
+
+    if (state.studyMode === 'arpejos') {
+      // Tríade tônica: 1ª + 3ª (M ou m) + 5ª justa
+      const tonicSem = LETTER_TO_SEMITONE[state.keyObj.tonic];
+      if (tonicSem === undefined) return;
+      const isMajor = state.keyObj.mode === 'M';
+      const thirdInterval = isMajor ? 4 : 3;
+      const chordPCs = [tonicSem % 12, (tonicSem + thirdInterval) % 12, (tonicSem + 7) % 12];
+      const matching = state.notes.filter(n => {
+        const sem = LETTER_TO_SEMITONE[n.displayLetter];
+        return sem !== undefined && chordPCs.includes(sem);
+      });
+      matching.sort((a, b) => b.posY - a.posY);
+      state.sequenceList = matching.map(n => state.notes.indexOf(n));
+    }
+    else if (state.studyMode === 'escala') {
+      // Todas as notas da escala, ordem ascendente
+      const sorted = state.notes.slice().sort((a, b) => b.posY - a.posY);
+      state.sequenceList = sorted.map(n => state.notes.indexOf(n));
+    }
+    else if (state.studyMode === 'padrao3') {
+      // Padrão de terças: 1-3, 2-4, 3-5, 4-6, ... — cada par é duas notas separadas por uma terça
+      const sorted = state.notes.slice().sort((a, b) => b.posY - a.posY);
+      const seq = [];
+      for (let i = 0; i + 2 < sorted.length; i++) {
+        seq.push(state.notes.indexOf(sorted[i]));
+        seq.push(state.notes.indexOf(sorted[i + 2]));
+      }
+      state.sequenceList = seq;
+    }
+  }
+
+  const LEDGER_ABOVE = [84, 68, 52, 36];
+  const LEDGER_BELOW = [180];
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem('sight-reader-progress-v17');
+      if (raw) {
+        const d = JSON.parse(raw);
+        state.bestCombo = d.bestCombo || 0;
+        state.keyId = d.keyId || 'GM';
+        state.bpm = d.bpm || 60;
+        state.audioOn = d.audioOn !== false;
+        if (typeof d.beatsPerNote === 'number') state.beatsPerNote = d.beatsPerNote;
+        if (typeof d.studyMode === 'string') state.studyMode = d.studyMode;
+        if (Array.isArray(d.allowedGraus) && d.allowedGraus.length > 0) state.allowedGraus = d.allowedGraus;
+        if (Array.isArray(d.allowedOctaves) && d.allowedOctaves.length > 0) state.allowedOctaves = d.allowedOctaves;
+        if (d.bestScores && typeof d.bestScores === 'object') {
+          state.bestScores = Object.assign(state.bestScores, d.bestScores);
+        }
+      }
+    } catch(e) {}
+  }
+  function saveState() {
+    try {
+      localStorage.setItem('sight-reader-progress-v17', JSON.stringify({
+        bestCombo: state.bestCombo, keyId: state.keyId, bpm: state.bpm,
+        audioOn: state.audioOn, beatsPerNote: state.beatsPerNote,
+        studyMode: state.studyMode, allowedGraus: state.allowedGraus,
+        allowedOctaves: state.allowedOctaves,
+        bestScores: state.bestScores
+      }));
+    } catch(e) {}
+  }
+  function updateStats() {
+    document.getElementById('stat-hits').textContent = state.hits;
+    document.getElementById('stat-misses').textContent = state.misses;
+    document.getElementById('stat-combo').textContent = state.combo + '🔥';
+    document.getElementById('stat-best').textContent = state.bestCombo;
+    document.getElementById('stat-score').textContent = state.score;
+    document.getElementById('stat-best-score').textContent = state.bestScores[state.studyMode] || 0;
+    document.getElementById('stat-timer').textContent = formatTime(state.timeRemaining);
+    // Cor do timer: amarelo abaixo de 15s, vermelho abaixo de 5s
+    const timerCard = document.getElementById('stat-timer-card');
+    timerCard.classList.toggle('warning', state.timeRemaining <= 15 && state.timeRemaining > 5);
+    timerCard.classList.toggle('critical', state.timeRemaining <= 5 && state.running);
+  }
+  function formatTime(sec) {
+    const s = Math.max(0, Math.ceil(sec));
+    const m = Math.floor(s / 60);
+    const r = s % 60;
+    return m + ':' + (r < 10 ? '0' : '') + r;
+  }
+  // Pontuação: 10 pts × multiplicador, onde multiplicador aumenta a cada 5 de combo.
+  // Combo 1-4: 10 | Combo 5-9: 20 | Combo 10-14: 30 | Combo 15-19: 40 | ...
+  function addScoreForHit() {
+    const multiplier = 1 + Math.floor(state.combo / 5);
+    state.score += 10 * multiplier;
+  }
+
+  function setNoteBadge(displayLetter, octIdx) {
+    const badge = document.getElementById('note-badge');
+    if (!badge) return;
+    if (displayLetter === null || displayLetter === undefined) {
+      badge.innerHTML = '<span class="note-badge-empty">—</span>';
+      badge.classList.remove('active');
+    } else {
+      const en = PT_TO_EN[displayLetter] || '';
+      const octStr = (octIdx === 1 || octIdx === 2 || octIdx === 3)
+        ? (octIdx === 1 ? '¹' : (octIdx === 2 ? '²' : '³'))
+        : '';
+      const html = '<span class="badge-pt">' + displayLetter + (octStr ? '<span class="oct-sm">' + octStr + '</span>' : '') + '</span>'
+                 + (en ? '<span class="badge-en">' + en + (octStr || '') + '</span>' : '');
+      badge.innerHTML = html;
+      badge.classList.add('active');
+    }
+  }
+
+  // ============================================================
+  // === DETECÇÃO VIA MICROFONE (sax alto - transposição Eb) ===
+  // ============================================================
+
+  function octSuffixOf(oct) {
+    return oct === 1 ? '¹' : (oct === 2 ? '²' : (oct === 3 ? '³' : ''));
+  }
+
+  // Autocorrelação pra detecção de pitch monofônico. Retorna freq Hz ou -1 se silêncio/ruído.
+  function autoCorrelate(buffer, sampleRate) {
+    const SIZE = buffer.length;
+    let rms = 0;
+    for (let i = 0; i < SIZE; i++) rms += buffer[i] * buffer[i];
+    rms = Math.sqrt(rms / SIZE);
+    if (rms < MIC_RMS_THRESHOLD) return -1;
+
+    // Trim baixa energia das pontas
+    let r1 = 0, r2 = SIZE - 1, thres = 0.2;
+    for (let i = 0; i < SIZE / 2; i++) {
+      if (Math.abs(buffer[i]) < thres) { r1 = i; break; }
+    }
+    for (let i = 1; i < SIZE / 2; i++) {
+      if (Math.abs(buffer[SIZE - i]) < thres) { r2 = SIZE - i; break; }
+    }
+    const trimmed = buffer.slice(r1, r2);
+    const newSize = trimmed.length;
+    if (newSize < 64) return -1;
+
+    const c = new Array(newSize).fill(0);
+    for (let i = 0; i < newSize; i++) {
+      for (let j = 0; j < newSize - i; j++) {
+        c[i] = c[i] + trimmed[j] * trimmed[j + i];
+      }
+    }
+    let d = 0;
+    while (d < newSize - 1 && c[d] > c[d + 1]) d++;
+    let maxval = -1, maxpos = -1;
+    for (let i = d; i < newSize; i++) {
+      if (c[i] > maxval) { maxval = c[i]; maxpos = i; }
+    }
+    if (maxpos <= 0) return -1;
+
+    // Interpolação parabólica pra refinar
+    let T0 = maxpos;
+    if (T0 > 0 && T0 < newSize - 1) {
+      const x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1];
+      const a = (x1 + x3 - 2 * x2) / 2;
+      const b = (x3 - x1) / 2;
+      if (a) T0 = T0 - b / (2 * a);
+    }
+    return sampleRate / T0;
+  }
+
+  // MIDI ↔ helpers
+  function freqToMidi(freq) {
+    return 69 + 12 * Math.log2(freq / 440);
+  }
+  function midiToFreq(midi) {
+    return 440 * Math.pow(2, (midi - 69) / 12);
+  }
+  function midiToGameNote(midi) {
+    // Game notation alinhada com clave de Sol visual:
+    //   Dó¹ = C4 (middle C, abaixo do pentagrama com linha suplementar) = MIDI 60
+    //   Dó² = C5 (no espaço central do pentagrama) = MIDI 72
+    //   Dó³ = C6 (acima do pentagrama) = MIDI 84
+    let octIdx;
+    if (midi >= 60 && midi <= 71) octIdx = 1;
+    else if (midi >= 72 && midi <= 83) octIdx = 2;
+    else if (midi >= 84 && midi <= 95) octIdx = 3;
+    else return null;
+    const pc = ((midi % 12) + 12) % 12;
+    return { letter: SOLFEGE_FROM_PC[pc], octIdx };
+  }
+  function gameNoteToWrittenMidi(note) {
+    const pc = NOTE_PC[note.displayLetter];
+    if (pc === undefined) return null;
+    // Base MIDI alinhada com clave de Sol visual (one octave acima do mapeamento antigo)
+    const baseMidi = note.octIdx === 1 ? 60 : (note.octIdx === 2 ? 72 : 84);
+    return baseMidi + pc;
+  }
+
+  async function enableMic() {
+    // Mutual exclusion: desliga solfejo se estiver ligado
+    if (state.speechEnabled) disableSpeech();
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+      });
+      state.micStream = stream;
+      state.micAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const source = state.micAudioContext.createMediaStreamSource(stream);
+      state.micAnalyser = state.micAudioContext.createAnalyser();
+      state.micAnalyser.fftSize = 2048;
+      state.micBuffer = new Float32Array(state.micAnalyser.fftSize);
+      source.connect(state.micAnalyser);
+      state.micEnabled = true;
+      state.micEnergyState = 'silent';
+      state.micOnsetPending = false;
+      // Atualiza botão + painel da página ATIVA
+      const suf = state.currentPage === 'transcriber' ? '-tr' : '';
+      const btnMic = document.getElementById('btn-mic' + suf);
+      const micStatus = document.getElementById('mic-status' + suf);
+      if (btnMic) {
+        btnMic.classList.add('active-mic');
+        btnMic.innerHTML = state.currentPage === 'transcriber' ? '🎤 Sax ON' : '🎤 Microfone ON';
+      }
+      if (micStatus) micStatus.style.display = 'flex';
+      state.micDetectInterval = setInterval(tickMicDetection, MIC_DETECT_INTERVAL_MS);
+    } catch (err) {
+      alert('Não foi possível acessar o microfone: ' + (err.message || err));
+      state.micEnabled = false;
+    }
+  }
+
+  function disableMic() {
+    if (state.micDetectInterval) { clearInterval(state.micDetectInterval); state.micDetectInterval = null; }
+    if (state.micStream) { state.micStream.getTracks().forEach(t => t.stop()); state.micStream = null; }
+    if (state.micAudioContext) { try { state.micAudioContext.close(); } catch(e){} state.micAudioContext = null; }
+    state.micAnalyser = null;
+    state.micBuffer = null;
+    state.micEnabled = false;
+    state.micEnergyState = 'silent';
+    state.micOnsetPending = false;
+    // Reseta ambos os painéis pra estado inicial
+    ['', '-tr'].forEach(suf => {
+      const btn = document.getElementById('btn-mic' + suf);
+      const status = document.getElementById('mic-status' + suf);
+      const concert = document.getElementById('mic-concert' + suf);
+      const written = document.getElementById('mic-written' + suf);
+      const cents = document.getElementById('mic-cents' + suf);
+      if (btn) {
+        btn.classList.remove('active-mic');
+        btn.innerHTML = suf === '-tr' ? '🎤 Ligar sax' : '🎤 Tocar no sax';
+      }
+      if (status) status.style.display = 'none';
+      if (concert) concert.textContent = '—';
+      if (written) written.textContent = '—';
+      if (cents) cents.textContent = '';
+    });
+  }
+
+  function tickMicDetection() {
+    if (!state.micEnabled || !state.micAnalyser) return;
+    state.micAnalyser.getFloatTimeDomainData(state.micBuffer);
+
+    // === 1. Calcula RMS (energia) ===
+    let rms = 0;
+    for (let i = 0; i < state.micBuffer.length; i++) rms += state.micBuffer[i] * state.micBuffer[i];
+    rms = Math.sqrt(rms / state.micBuffer.length);
+
+    // === 2. Máquina de estado de energia + detecção de onset ===
+    if (state.micEnergyState === 'silent' && rms > MIC_ONSET_RMS_HIGH) {
+      state.micEnergyState = 'voiced';
+      state.micOnsetPending = true;
+    } else if (state.micEnergyState === 'voiced' && rms < MIC_ONSET_RMS_LOW) {
+      state.micEnergyState = 'silent';
+      state.micOnsetPending = false;
+      state.micLastFiredMidi = null; // permite refire da mesma nota após silêncio
+      state.micCurrentMidi = null;
+      state.micStableFrames = 0;
+    }
+
+    const suf = state.currentPage === 'transcriber' ? '-tr' : '';
+    const concertEl = document.getElementById('mic-concert' + suf);
+    const writtenEl = document.getElementById('mic-written' + suf);
+    const concertEnEl = document.getElementById('mic-concert-en' + suf);
+    const writtenEnEl = document.getElementById('mic-written-en' + suf);
+    const centsEl = document.getElementById('mic-cents' + suf);
+    const hintEl = document.getElementById('mic-hint' + suf); // pode não existir no transcritor
+    const needleEl = document.getElementById('meter-needle' + suf);
+
+    // === 3. Se em silêncio, limpa UI e retorna ===
+    if (state.micEnergyState === 'silent') {
+      if (concertEl) concertEl.textContent = '—';
+      if (writtenEl) writtenEl.textContent = '—';
+      if (concertEnEl) concertEnEl.textContent = '';
+      if (writtenEnEl) writtenEnEl.textContent = '';
+      if (centsEl) { centsEl.textContent = ''; centsEl.classList.remove('in-tune', 'flat', 'sharp'); }
+      if (needleEl) needleEl.style.opacity = '0';
+      const badge = document.getElementById('note-badge');
+      if (badge && badge.classList.contains('from-mic')) {
+        setNoteBadge(null);
+        badge.classList.remove('from-mic');
+      }
+      if (hintEl) hintEl.style.display = state.running && !state.paused ? 'none' : 'inline';
+      return;
+    }
+
+    // === 4. Voiced: detecção de pitch ===
+    const freq = autoCorrelate(state.micBuffer, state.micAudioContext.sampleRate);
+    if (freq <= 0) {
+      if (hintEl) hintEl.style.display = state.running && !state.paused ? 'none' : 'inline';
+      return;
+    }
+
+    const midiFloat = freqToMidi(freq);
+    const concertMidi = Math.round(midiFloat);
+    const cents = Math.round((midiFloat - concertMidi) * 100);
+    const writtenMidi = concertMidi + ALTO_SAX_TRANSPOSE;
+
+    const concertInfo = midiToGameNote(concertMidi);
+    const writtenInfo = midiToGameNote(writtenMidi);
+
+    // === 5. UI updates ===
+    if (concertInfo) {
+      if (concertEl) concertEl.textContent = concertInfo.letter + octSuffixOf(concertInfo.octIdx);
+      if (concertEnEl) concertEnEl.textContent = '(' + (PT_TO_EN[concertInfo.letter] || ABC_FROM_PC[((concertMidi % 12) + 12) % 12]) + octSuffixOf(concertInfo.octIdx) + ')';
+    } else {
+      if (concertEl) concertEl.textContent = '~' + Math.round(freq) + 'Hz';
+      if (concertEnEl) concertEnEl.textContent = '';
+    }
+    if (writtenInfo) {
+      if (writtenEl) writtenEl.textContent = writtenInfo.letter + octSuffixOf(writtenInfo.octIdx);
+      if (writtenEnEl) writtenEnEl.textContent = '(' + (PT_TO_EN[writtenInfo.letter] || ABC_FROM_PC[((writtenMidi % 12) + 12) % 12]) + octSuffixOf(writtenInfo.octIdx) + ')';
+    } else {
+      if (writtenEl) writtenEl.textContent = '—';
+      if (writtenEnEl) writtenEnEl.textContent = '';
+    }
+
+    if (centsEl) {
+      centsEl.classList.remove('in-tune', 'flat', 'sharp');
+      if (Math.abs(cents) <= 15) centsEl.classList.add('in-tune');
+      else if (cents < 0) centsEl.classList.add('flat');
+      else centsEl.classList.add('sharp');
+      centsEl.textContent = (cents > 0 ? '+' : '') + cents + ' cents';
+    }
+
+    // === 5b. Afinador: ponteiro do medidor ===
+    if (needleEl) {
+      const clamped = Math.max(-50, Math.min(50, cents));
+      const percent = clamped + 50; // map [-50, 50] → [0, 100]
+      needleEl.style.left = percent + '%';
+      needleEl.style.opacity = '1';
+    }
+
+    // Badge só faz sentido no sight-reader (não usa no transcritor)
+    if (state.currentPage === 'sight-reader' && writtenInfo) {
+      setNoteBadge(writtenInfo.letter, writtenInfo.octIdx);
+      const badge = document.getElementById('note-badge');
+      if (badge) badge.classList.add('from-mic');
+    }
+
+    if (hintEl) hintEl.style.display = state.running && !state.paused ? 'none' : 'inline';
+
+    // === 6. Stability tracking (pra detectar mudança de pitch estável) ===
+    if (concertMidi === state.micCurrentMidi) {
+      state.micStableFrames++;
+    } else {
+      state.micCurrentMidi = concertMidi;
+      state.micStableFrames = 1;
+    }
+
+    // === 7. Fire decision: onset OU pitch change (com debounce) ===
+    const now = Date.now();
+    const debouncePassed = (now - state.micLastFireTime) > MIC_FIRE_DEBOUNCE_MS;
+    let shouldFire = false;
+
+    // Caso 1: Energy onset (attack claro, prioridade) — dispara imediatamente
+    if (state.micOnsetPending && debouncePassed) {
+      shouldFire = true;
+      state.micOnsetPending = false;
+    }
+
+    // Caso 2: Pitch mudou (legato/scale runs sem tonguear claramente) — exige estabilidade
+    if (!shouldFire && debouncePassed &&
+        state.micLastFiredMidi !== null &&
+        concertMidi !== state.micLastFiredMidi &&
+        state.micStableFrames >= MIC_PITCH_CHANGE_STABLE_FRAMES) {
+      shouldFire = true;
+    }
+
+    if (shouldFire) {
+      state.micLastFiredMidi = concertMidi;
+      state.micLastFireTime = now;
+      processMicMatch(writtenMidi, cents);
+    }
+  }
+
+  function processMicMatch(writtenMidi, cents) {
+    // Bifurcação: se estiver no transcritor, escreve no pentagrama em vez de matchear
+    if (state.currentPage === 'transcriber') {
+      processMicTranscribe(writtenMidi);
+      return;
+    }
+
+    if (!state.running || state.paused) return;
+
+    // Identifica a primeira nota (mesma lógica do botão)
+    const allActive = state.activeNotes.filter(an => an.status === 'active');
+    let firstNote = null;
+    const incoming = allActive.filter(an => an.x >= HIT_ZONE_X);
+    if (incoming.length > 0) firstNote = incoming.reduce((a, b) => a.x < b.x ? a : b);
+    else if (allActive.length > 0) firstNote = allActive.reduce((a, b) => a.x > b.x ? a : b);
+    if (!firstNote) return;
+
+    const tn = state.notes[firstNote.noteIdx];
+    const expectedWrittenMidi = gameNoteToWrittenMidi(tn);
+    if (expectedWrittenMidi === null) return;
+
+    // Match com tolerância de ±MIC_MIDI_TOLERANCE semitons
+    // Isso perdoa desafinação onde o pitch oscila entre dois MIDIs vizinhos
+    if (Math.abs(writtenMidi - expectedWrittenMidi) <= MIC_MIDI_TOLERANCE) {
+      // HIT! Mesma lógica do triggerAnswer
+      firstNote.status = 'hit';
+      state.hits++;
+      state.combo++;
+      addScoreForHit();
+      if (state.combo > state.bestCombo) { state.bestCombo = state.combo; saveState(); }
+      setNoteBadge(tn.displayLetter, tn.octIdx);
+      const badge = document.getElementById('note-badge');
+      if (badge) badge.classList.add('from-mic');
+      updateStats();
+    }
+    // Nota errada via mic: não conta como miss
+  }
+
+  // ============================================================
+  // === SOLFEJO: reconhecimento de voz (Web Speech API) ========
+  // ============================================================
+  const SPEECH_DEBOUNCE_MS = 250;
+
+  // Mapa de palavras → nome canônico da nota (Dó Maior tem só naturais)
+  const NOTE_WORDS = {
+    'do': 'Dó', 'dó': 'Dó', 'doh': 'Dó',
+    're': 'Ré', 'ré': 'Ré', 'reh': 'Ré',
+    'mi': 'Mi', 'me': 'Mi',
+    'fa': 'Fá', 'fá': 'Fá', 'fah': 'Fá',
+    'sol': 'Sol', 'só': 'Sol',
+    'la': 'Lá', 'lá': 'Lá', 'lah': 'Lá',
+    'si': 'Si', 'ti': 'Si', 'ci': 'Si'
+  };
+
+  function parseSpeechToNote(transcript) {
+    if (!transcript) return null;
+    const words = transcript.toLowerCase().trim().split(/[\s,.\-!?]+/);
+    // Percorre de trás pra frente pra pegar a palavra mais recente
+    for (let i = words.length - 1; i >= 0; i--) {
+      const w = words[i].trim();
+      if (NOTE_WORDS[w]) return NOTE_WORDS[w];
+    }
+    return null;
+  }
+
+  function updateSpeechButtonState() {
+    const btn = document.getElementById('btn-speech');
+    if (!btn) return;
+    if (state.keyId !== 'CM') {
+      btn.classList.add('disabled-key');
+      btn.title = 'Solfejo só funciona em Dó Maior (sem sustenidos/bemóis). Troque a tonalidade primeiro.';
+      // Se estava ativo e trocou de tonalidade, desliga
+      if (state.speechEnabled) disableSpeech();
+    } else {
+      btn.classList.remove('disabled-key');
+      btn.title = 'Solfeje o nome da nota (dó, ré, mi...)';
+    }
+  }
+
+  function enableSpeech() {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) {
+      alert('Seu navegador não suporta reconhecimento de voz. Use Chrome ou Edge.');
+      return;
+    }
+    if (state.keyId !== 'CM') {
+      alert('Solfejo só funciona em Dó Maior (sem sustenidos/bemóis). Troque a tonalidade primeiro.');
+      return;
+    }
+
+    // Mutual exclusion: desliga microfone do sax se estiver ligado
+    if (state.micEnabled) disableMic();
+
+    const rec = new SR();
+    rec.lang = 'pt-BR';
+    rec.continuous = true;
+    rec.interimResults = true;
+
+    // === Anti-loop guards ===
+    // hasStartedSuccessfully: só vira true no onstart. Se o onend disparar antes disso,
+    //   NÃO reinicia (isso é o que causa o loop do popup de permissão quando algo falha inicial).
+    // restartTimestamps: contador de restarts em janela de 5s. Se ultrapassar 3, desliga.
+    let hasStartedSuccessfully = false;
+    let restartTimestamps = [];
+
+    rec.onstart = () => {
+      hasStartedSuccessfully = true;
+    };
+
+    rec.onresult = (event) => {
+      const lastResult = event.results[event.results.length - 1];
+      const transcript = (lastResult[0] && lastResult[0].transcript) || '';
+      const note = parseSpeechToNote(transcript);
+      if (!note) return;
+
+      const now = Date.now();
+      if (note === state.speechLastNote && now - state.speechLastFireTime < SPEECH_DEBOUNCE_MS) return;
+      state.speechLastNote = note;
+      state.speechLastFireTime = now;
+
+      // Reutiliza o badge "Tecla pressionada" pra mostrar o que foi solfejado
+      setNoteBadge(note, null);
+      const badge = document.getElementById('note-badge');
+      if (badge) badge.classList.add('from-mic');
+
+      processSpeechMatch(note);
+    };
+
+    rec.onerror = (event) => {
+      // Erros fatais: desliga tudo (sem restart)
+      if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+        hasStartedSuccessfully = false; // trava restart
+        alert('Permissão do microfone negada. Ative nas configurações do navegador.');
+        disableSpeech();
+      } else if (event.error === 'audio-capture') {
+        hasStartedSuccessfully = false; // trava restart
+        alert('Microfone indisponível ou em uso por outro programa.');
+        disableSpeech();
+      }
+      // Outros erros ('no-speech', 'aborted', 'network'): deixa onend cuidar do restart
+    };
+
+    rec.onend = () => {
+      // Não reinicia se:
+      //   1. o usuário desligou o solfejo
+      //   2. o rec nunca iniciou com sucesso (evita loop do popup de permissão)
+      //   3. o rec foi substituído por outro
+      if (!state.speechEnabled) return;
+      if (!hasStartedSuccessfully) return;
+      if (state.speechRecognition !== rec) return;
+
+      // Anti-flood: máximo 3 restarts em 5 segundos
+      const now = Date.now();
+      restartTimestamps = restartTimestamps.filter(t => now - t < 5000);
+      if (restartTimestamps.length >= 3) {
+        console.warn('Solfejo: muitos reinícios em pouco tempo — desligando.');
+        disableSpeech();
+        return;
+      }
+      restartTimestamps.push(now);
+
+      // Delay pra evitar problemas com o browser
+      setTimeout(() => {
+        if (state.speechEnabled && state.speechRecognition === rec) {
+          try { rec.start(); } catch(e) { /* pode já estar rodando */ }
+        }
+      }, 300);
+    };
+
+    // Coloca no state ANTES de chamar start() pra evitar race conditions com callbacks
+    state.speechRecognition = rec;
+    state.speechEnabled = true;
+    state.speechLastNote = null;
+
+    try {
+      rec.start();
+      document.getElementById('btn-speech').classList.add('active-mic');
+      document.getElementById('btn-speech').innerHTML = '🎙️ Solfejo ON';
+      document.getElementById('speech-status').style.display = 'flex';
+    } catch(e) {
+      alert('Erro ao iniciar reconhecimento de voz: ' + (e.message || e));
+      state.speechEnabled = false;
+      state.speechRecognition = null;
+    }
+  }
+
+  function disableSpeech() {
+    state.speechEnabled = false;
+    if (state.speechRecognition) {
+      try {
+        // Remove TODOS os callbacks antes de parar, pra prevenir auto-restart e efeitos colaterais
+        state.speechRecognition.onstart = null;
+        state.speechRecognition.onend = null;
+        state.speechRecognition.onerror = null;
+        state.speechRecognition.onresult = null;
+        state.speechRecognition.stop();
+      } catch(e) {}
+      state.speechRecognition = null;
+    }
+    state.speechLastNote = null;
+    const btn = document.getElementById('btn-speech');
+    if (btn) {
+      btn.classList.remove('active-mic');
+      btn.innerHTML = '🎙️ Solfejar';
+    }
+    const panel = document.getElementById('speech-status');
+    if (panel) panel.style.display = 'none';
+  }
+
+  function processSpeechMatch(noteLetter) {
+    if (!state.running || state.paused) return;
+    if (state.keyId !== 'CM') return; // dupla verificação
+
+    // === Solfejo: procura QUALQUER nota ativa com aquela letra (ignora oitava) ===
+    // Diferente do sax/botão que só permite acertar a "primeira nota geral",
+    // o solfejo procura entre TODAS as notas ativas na tela a que tem aquela letra.
+    // Exemplo: se falar "dó", encontra a próxima Dó (¹, ² ou ³) na tela, mesmo
+    // que tenha Sol, Ré ou outras notas na frente dela.
+    const matchingByLetter = state.activeNotes.filter(an =>
+      an.status === 'active' && state.notes[an.noteIdx].displayLetter === noteLetter
+    );
+
+    if (matchingByLetter.length === 0) return; // nenhuma nota daquela letra na tela
+
+    // Pega a mais próxima da hit zone (entre as notas ativas com aquela letra)
+    let target = null;
+    const incoming = matchingByLetter.filter(an => an.x >= HIT_ZONE_X);
+    if (incoming.length > 0) {
+      target = incoming.reduce((a, b) => a.x < b.x ? a : b); // menor x = mais próxima
+    } else {
+      target = matchingByLetter.reduce((a, b) => a.x > b.x ? a : b); // já passou; a mais recente
+    }
+
+    if (!target) return;
+
+    // HIT!
+    target.status = 'hit';
+    state.hits++;
+    state.combo++;
+    addScoreForHit();
+    if (state.combo > state.bestCombo) { state.bestCombo = state.combo; saveState(); }
+    updateStats();
+    // Badge já foi atualizado no onresult com a letra falada
+  }
+
+  // ============================================================
+  // === TRANSCRITOR: sax → pentagrama ==========================
+  // ============================================================
+  const TRANSCRIBER_START_X = 110;
+  const TRANSCRIBER_NOTE_SPACING = 35;
+  const TRANSCRIBER_MAX_NOTES = 14; // notas visíveis; extras vão saindo pela esquerda
+
+  // Converte MIDI escrito (do sax alto) em info pra desenhar no pentagrama
+  function midiToTranscribeInfo(writtenMidi) {
+    if (writtenMidi < 60 || writtenMidi > 89) return null; // fora do range Dó¹–Fá³
+
+    const semitone = (writtenMidi - 60) % 12;
+    const octIdx = Math.floor((writtenMidi - 60) / 12) + 1;
+    const letter = SOLFEGE_FROM_PC[semitone]; // "Dó", "Dó#", "Ré", "Ré#", ...
+
+    // Nota com sustenido: usa a posY da natural correspondente + acidente ♯
+    // (SOLFEGE_FROM_PC só usa sustenidos, nunca bemóis)
+    const naturalLetter = letter.replace(/[#♭]/g, '');
+    const octChar = octIdx === 1 ? '¹' : (octIdx === 2 ? '²' : '³');
+    const key = naturalLetter + octChar;
+    const naturalInfo = NATURAL_POSITIONS[key];
+    if (!naturalInfo) return null;
+
+    const accidental = letter.includes('#') ? '♯' : (letter.includes('♭') ? '♭' : '');
+
+    return {
+      letter,
+      naturalLetter,
+      accidental,
+      octIdx,
+      posY: naturalInfo.posY,
+      midi: writtenMidi,
+    };
+  }
+
+  // Renderiza o pentagrama do transcritor com as notas gravadas
+  function renderTranscriberStaff() {
+    const svg = document.getElementById('transcriber-staff');
+    if (!svg) return;
+    let html = '';
+
+    // Linhas do pentagrama (full-width)
+    STAFF_LINES.forEach(y => {
+      html += '<line x1="0" y1="'+y+'" x2="600" y2="'+y+'" stroke="'+STAFF_INK+'" stroke-width="1"/>';
+    });
+
+    // Notas transcritas (renderizadas ANTES da clave pra clave ficar por cima)
+    const notes = state.transcribedNotes.slice(-TRANSCRIBER_MAX_NOTES);
+    notes.forEach((note, i) => {
+      const x = TRANSCRIBER_START_X + i * TRANSCRIBER_NOTE_SPACING;
+      const y = note.posY;
+      const color = COLOR_NOTE_DEFAULT;
+
+      // Ledger lines (linhas suplementares)
+      LEDGER_BELOW.forEach(ly => {
+        if (y >= ly) html += '<line x1="'+(x-11)+'" y1="'+ly+'" x2="'+(x+11)+'" y2="'+ly+'" stroke="'+color+'" stroke-width="1"/>';
+      });
+      LEDGER_ABOVE.forEach(ly => {
+        if (y <= ly) html += '<line x1="'+(x-11)+'" y1="'+ly+'" x2="'+(x+11)+'" y2="'+ly+'" stroke="'+color+'" stroke-width="1"/>';
+      });
+
+      // Acidente (♯ ou ♭) à esquerda da bola
+      if (note.accidental) {
+        html += '<text x="'+(x-18)+'" y="'+(y+6)+'" font-size="20" font-family="serif" fill="'+color+'">'+note.accidental+'</text>';
+      }
+
+      // Bola da nota + haste
+      html += '<ellipse cx="'+x+'" cy="'+y+'" rx="'+NOTE_RX+'" ry="'+NOTE_RY+'" fill="'+color+'" transform="rotate(-20 '+x+' '+y+')"/>';
+      if (y <= 132) {
+        html += '<line x1="'+(x-6)+'" y1="'+(y+2)+'" x2="'+(x-6)+'" y2="'+(y+34)+'" stroke="'+color+'" stroke-width="1.4"/>';
+      } else {
+        html += '<line x1="'+(x+6)+'" y1="'+(y-2)+'" x2="'+(x+6)+'" y2="'+(y-34)+'" stroke="'+color+'" stroke-width="1.4"/>';
+      }
+
+      // Legenda embaixo (nome da nota)
+      const octStr = note.octIdx === 1 ? '¹' : (note.octIdx === 2 ? '²' : '³');
+      html += '<text x="'+x+'" y="215" font-size="11" text-anchor="middle" fill="'+STAFF_INK+'" opacity="0.7" font-family="var(--font-mono)">'+note.letter+octStr+'</text>';
+    });
+
+    // Área da clave (fundo + linhas + símbolo, por cima das notas)
+    html += '<rect x="0" y="0" width="100" height="240" fill="'+STAFF_BG+'"/>';
+    STAFF_LINES.forEach(y => {
+      html += '<line x1="0" y1="'+y+'" x2="100" y2="'+y+'" stroke="'+STAFF_INK+'" stroke-width="1"/>';
+    });
+    html += '<text x="6" y="164" font-size="62" font-family="serif" fill="'+STAFF_INK+'" font-weight="400">𝄞</text>';
+
+    svg.innerHTML = html;
+  }
+
+  // Atualiza a lista textual de notas transcritas
+  function updateTranscribedList() {
+    const container = document.getElementById('transcribed-list-content');
+    if (!container) return;
+    const notes = state.transcribedNotes.slice(-TRANSCRIBER_MAX_NOTES);
+    if (notes.length === 0) {
+      container.innerHTML = '<em>—</em>';
+    } else {
+      container.textContent = notes.map(n => {
+        const octStr = n.octIdx === 1 ? '¹' : (n.octIdx === 2 ? '²' : '³');
+        return n.letter + octStr;
+      }).join(' · ');
+    }
+  }
+
+  // Processa uma nota detectada pelo mic quando está na página do transcritor
+  function processMicTranscribe(writtenMidi) {
+    const info = midiToTranscribeInfo(writtenMidi);
+    if (!info) return; // fora do range
+
+    // Evita duplicar a mesma nota MIDI consecutivamente
+    const last = state.transcribedNotes[state.transcribedNotes.length - 1];
+    if (last && last.midi === writtenMidi) return;
+
+    state.transcribedNotes.push(info);
+    renderTranscriberStaff();
+    updateTranscribedList();
+  }
+
+  function clearTranscribedNotes() {
+    state.transcribedNotes = [];
+    renderTranscriberStaff();
+    updateTranscribedList();
+  }
+
+  function renderNote(an) {
+    const noteData = state.notes[an.noteIdx];
+    const y = noteData.posY;
+    const x = an.x;
+    let color = COLOR_NOTE_DEFAULT;
+    if (an.status === 'hit') color = COLOR_NOTE_HIT;
+    else if (an.status === 'miss') color = COLOR_NOTE_MISS;
+    let html = '';
+
+    LEDGER_BELOW.forEach(ly => {
+      if (y >= ly) html += '<line x1="'+(x-11)+'" y1="'+ly+'" x2="'+(x+11)+'" y2="'+ly+'" stroke="'+color+'" stroke-width="1"/>';
+    });
+    LEDGER_ABOVE.forEach(ly => {
+      if (y <= ly) html += '<line x1="'+(x-11)+'" y1="'+ly+'" x2="'+(x+11)+'" y2="'+ly+'" stroke="'+color+'" stroke-width="1"/>';
+    });
+
+    html += '<ellipse cx="'+x+'" cy="'+y+'" rx="'+NOTE_RX+'" ry="'+NOTE_RY+'" fill="'+color+'" transform="rotate(-20 '+x+' '+y+')"/>';
+    if (y <= 132) html += '<line x1="'+(x-6)+'" y1="'+(y+2)+'" x2="'+(x-6)+'" y2="'+(y+34)+'" stroke="'+color+'" stroke-width="1.4"/>';
+    else html += '<line x1="'+(x+6)+'" y1="'+(y-2)+'" x2="'+(x+6)+'" y2="'+(y-34)+'" stroke="'+color+'" stroke-width="1.4"/>';
+    return html;
+  }
+
+  function renderPreviewNote() {
+    if (!state.previewNote) return '';
+    // Durante o jogo ativo, o feedback é a própria nota incoming ficando verde.
+    // O preview-on-line só aparece em modo exploração (antes do jogo ou em pausa).
+    if (state.running && !state.paused) return '';
+    const y = state.previewNote.posY;
+    const x = PREVIEW_X;
+    const color = COLOR_PREVIEW;
+    let html = '';
+    LEDGER_BELOW.forEach(ly => {
+      if (y >= ly) html += '<line x1="'+(x-11)+'" y1="'+ly+'" x2="'+(x+11)+'" y2="'+ly+'" stroke="'+color+'" stroke-width="1.2"/>';
+    });
+    LEDGER_ABOVE.forEach(ly => {
+      if (y <= ly) html += '<line x1="'+(x-11)+'" y1="'+ly+'" x2="'+(x+11)+'" y2="'+ly+'" stroke="'+color+'" stroke-width="1.2"/>';
+    });
+    html += '<ellipse cx="'+x+'" cy="'+y+'" rx="'+(NOTE_RX+0.5)+'" ry="'+(NOTE_RY+0.5)+'" fill="'+color+'" transform="rotate(-20 '+x+' '+y+')"/>';
+    if (y <= 132) html += '<line x1="'+(x-6)+'" y1="'+(y+2)+'" x2="'+(x-6)+'" y2="'+(y+34)+'" stroke="'+color+'" stroke-width="1.6"/>';
+    else html += '<line x1="'+(x+6)+'" y1="'+(y-2)+'" x2="'+(x+6)+'" y2="'+(y-34)+'" stroke="'+color+'" stroke-width="1.6"/>';
+    return html;
+  }
+
+  function renderFrame() {
+    const svg = document.getElementById('staff-easy');
+    if (!svg) return;
+    let html = '';
+    STAFF_LINES.forEach(y => {
+      html += '<line x1="0" y1="'+y+'" x2="600" y2="'+y+'" stroke="'+STAFF_INK+'" stroke-width="1"/>';
+    });
+    state.activeNotes.forEach(an => {
+      if (an.x >= 95 && an.x <= 605) html += renderNote(an);
+    });
+    html += '<rect x="0" y="0" width="100" height="240" fill="'+STAFF_BG+'"/>';
+    STAFF_LINES.forEach(y => {
+      html += '<line x1="0" y1="'+y+'" x2="100" y2="'+y+'" stroke="'+STAFF_INK+'" stroke-width="1"/>';
+    });
+    html += '<text x="6" y="164" font-size="62" font-family="serif" fill="'+STAFF_INK+'" font-weight="400">𝄞</text>';
+    let armX = 52;
+    const key = state.keyObj;
+    if (key.sharps.length > 0) {
+      key.sharps.forEach(letter => {
+        const y = SHARP_POS[letter];
+        html += '<text x="'+armX+'" y="'+(y+6)+'" font-size="22" font-family="serif" fill="'+STAFF_INK+'">♯</text>';
+        armX += 9;
+      });
+    } else if (key.flats.length > 0) {
+      key.flats.forEach(letter => {
+        const y = FLAT_POS[letter];
+        html += '<text x="'+armX+'" y="'+(y+6)+'" font-size="22" font-family="serif" fill="'+STAFF_INK+'">♭</text>';
+        armX += 9;
+      });
+    }
+    html += '<line x1="'+HIT_ZONE_X+'" y1="20" x2="'+HIT_ZONE_X+'" y2="200" stroke="'+COLOR_HIT_LINE+'" stroke-width="2" stroke-dasharray="4,3" opacity="0.85"/>';
+    html += '<circle cx="'+HIT_ZONE_X+'" cy="14" r="3" fill="'+COLOR_HIT_LINE+'"/>';
+
+    // Nota de preview (botão pressionado) — renderiza por cima de tudo
+    html += renderPreviewNote();
+
+    svg.innerHTML = html;
+  }
+
+  function populateKeySelect() {
+    const sel = document.getElementById('tom-sel');
+    const majors = KEYS.filter(k => k.mode === 'M');
+    const minors = KEYS.filter(k => k.mode === 'm');
+    let html = '<optgroup label="— Tonalidades Maiores —">';
+    majors.forEach(k => html += '<option value="'+k.id+'">'+k.name+'</option>');
+    html += '</optgroup><optgroup label="— Tonalidades menores —">';
+    minors.forEach(k => html += '<option value="'+k.id+'">'+k.name+'</option>');
+    html += '</optgroup>';
+    sel.innerHTML = html;
+    sel.value = state.keyId;
+    sel.addEventListener('change', (e) => {
+      state.keyId = e.target.value;
+      state.keyObj = KEYS.find(k => k.id === state.keyId);
+      state.notes = buildScaleNotes(state.keyObj);
+      buildModeSequence(); // rebuilda a sequência do modo atual pra nova tonalidade
+      resetGame();
+      renderEasyButtons();
+      updateSpeechButtonState(); // habilita/desabilita botão de solfejo conforme tonalidade
+      saveState();
+      document.getElementById('app-root').focus();
+    });
+  }
+
+  // Modo easy: UM BOTÃO POR NOTA+OITAVA (15-21 botões), ordenados do agudo (topo) ao grave (base)
+  function renderEasyButtons() {
+    // Ordena por posY (agudo = menor posY = topo)
+    const sortedNotes = [...state.notes].sort((a, b) => a.posY - b.posY);
+    state.easyButtons = sortedNotes.map((n, i) => ({
+      ...n,
+      idx: i,
+    }));
+    const container = document.getElementById('easy-buttons');
+    container.innerHTML = state.easyButtons.map(btn => {
+      const octSuffix = btn.octIdx === 1 ? '¹' : (btn.octIdx === 2 ? '²' : '³');
+      return '<button class="easy-btn-vert oct-' + btn.octIdx + '" '
+        + 'data-letter="' + btn.displayLetter + '" '
+        + 'data-oct="' + btn.octIdx + '" '
+        + 'data-posy="' + btn.posY + '" '
+        + 'data-idx="' + btn.idx + '">'
+        + '<span class="letter">' + btn.displayLetter + '</span>'
+        + '<span class="oct">' + octSuffix + '</span>'
+        + '</button>';
+    }).join('');
+    container.querySelectorAll('.easy-btn-vert').forEach(btn => {
+      const letter = btn.dataset.letter;
+      const oct = parseInt(btn.dataset.oct);
+      const posY = parseFloat(btn.dataset.posy);
+      btn.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        try { btn.setPointerCapture(e.pointerId); } catch(err) {}
+        btn.classList.add('pressed');
+        state.previewNote = { posY, octIdx: oct, displayLetter: letter };
+        setNoteBadge(letter, oct);
+        const badge = document.getElementById('note-badge');
+        if (badge) badge.classList.remove('from-mic');
+        renderFrame();
+        triggerAnswer(letter, oct, btn);
+        document.getElementById('app-root').focus();
+      });
+      const release = () => {
+        btn.classList.remove('pressed');
+        if (state.previewNote && state.previewNote.posY === posY && state.previewNote.octIdx === oct) {
+          state.previewNote = null;
+          setNoteBadge(null);
+          renderFrame();
+        }
+      };
+      btn.addEventListener('pointerup', release);
+      btn.addEventListener('pointercancel', release);
+      btn.addEventListener('pointerleave', release);
+    });
+  }
+
+  function spawnNote() {
+    if (state.notes.length === 0) return;
+
+    if (state.studyMode === 'aleatorias') {
+      spawnRandomNote();
+    } else {
+      spawnSequenceNote();
+    }
+  }
+
+  // Modo Aleatórias: sorteia uma nota respeitando os saltos permitidos
+  function spawnRandomNote() {
+    const sortedByPitch = [...state.notes].sort((a, b) => b.posY - a.posY);
+    let chosenNoteIdx;
+    if (state.lastSpawnedNoteIdx === -1 || state.allowedGraus.length === 0) {
+      chosenNoteIdx = Math.floor(Math.random() * state.notes.length);
+    } else {
+      const lastNote = state.notes[state.lastSpawnedNoteIdx];
+      const lastSortedIdx = sortedByPitch.indexOf(lastNote);
+      const candidates = [];
+      for (let i = 0; i < sortedByPitch.length; i++) {
+        const dist = Math.abs(i - lastSortedIdx);
+        if (dist > 0 && isGrauAllowed(dist)) candidates.push(sortedByPitch[i]);
+      }
+      if (candidates.length === 0) {
+        chosenNoteIdx = Math.floor(Math.random() * state.notes.length);
+      } else {
+        const chosen = candidates[Math.floor(Math.random() * candidates.length)];
+        chosenNoteIdx = state.notes.indexOf(chosen);
+      }
+    }
+    state.activeNotes.push({ id: state.nextNoteId++, noteIdx: chosenNoteIdx, x: SPAWN_X, status: 'active' });
+    state.lastSpawnedNoteIdx = chosenNoteIdx;
+  }
+
+  // Modos Escala / Arpejos / Padrão 3ªs: percorre uma sequência sobe-e-desce
+  function spawnSequenceNote() {
+    if (!state.sequenceList || state.sequenceList.length === 0) {
+      buildModeSequence();
+      if (state.sequenceList.length === 0) return;
+    }
+
+    const chosenNoteIdx = state.sequenceList[state.sequenceIdx];
+    state.activeNotes.push({
+      id: state.nextNoteId++,
+      noteIdx: chosenNoteIdx,
+      x: SPAWN_X,
+      status: 'active'
+    });
+
+    state.sequenceIdx += state.sequenceDirection;
+    if (state.sequenceList.length < 2) {
+      state.sequenceIdx = 0;
+    } else if (state.sequenceIdx >= state.sequenceList.length) {
+      state.sequenceIdx = state.sequenceList.length - 2;
+      state.sequenceDirection = -1;
+    } else if (state.sequenceIdx < 0) {
+      state.sequenceIdx = 1;
+      state.sequenceDirection = 1;
+    }
+  }
+
+  function triggerAnswer(letter, octIdx, btn) {
+    const allActive = state.activeNotes.filter(an => an.status === 'active');
+
+    // === Som ===
+    let octForSound = octIdx;
+    if (octForSound === null) {
+      const m = allActive.find(an => state.notes[an.noteIdx].displayLetter === letter);
+      octForSound = m ? state.notes[m.noteIdx].octIdx : 2;
+    }
+    const freq = getFrequencyForNote(letter, octForSound);
+    playSaxNote(freq, 0.5);
+
+    if (!state.running || state.paused) return;
+
+    // === Identifica APENAS a primeira nota — a mais próxima da linha, antes do tracejado ===
+    // (entre as incoming, x >= HIT_ZONE_X, a de menor x; ou a já passada mais próxima de volta)
+    let firstNote = null;
+    const incoming = allActive.filter(an => an.x >= HIT_ZONE_X);
+    if (incoming.length > 0) {
+      firstNote = incoming.reduce((a, b) => a.x < b.x ? a : b);
+    } else {
+      const past = allActive.filter(an => an.x < HIT_ZONE_X);
+      if (past.length > 0) firstNote = past.reduce((a, b) => a.x > b.x ? a : b);
+    }
+
+    if (!firstNote) {
+      // Sem nenhuma nota ativa na tela: erro genérico
+      flashButton(btn, false);
+      state.misses++; state.combo = 0; updateStats();
+      return;
+    }
+
+    // === Confere se o pressionado bate com A PRIMEIRA nota especificamente ===
+    // Só essa pode virar verde. As outras (segunda, terceira...) são intocáveis até virarem "primeiras".
+    const tn = state.notes[firstNote.noteIdx];
+    const isCorrect = (tn.displayLetter === letter && tn.octIdx === octIdx);
+
+    if (isCorrect) {
+      firstNote.status = 'hit';
+      state.hits++;
+      state.combo++;
+      addScoreForHit();
+      if (state.combo > state.bestCombo) { state.bestCombo = state.combo; saveState(); }
+      flashButton(btn, true);
+    } else {
+      // Letra errada pra primeira nota: erro de input, mas nenhuma nota da tela é marcada
+      // (você pode tentar de novo até a primeira sair de cena por conta própria)
+      flashButton(btn, false);
+      state.misses++; state.combo = 0;
+    }
+    updateStats();
+  }
+
+  function flashButton(btn, correct) {
+    if (!btn) return;
+    btn.classList.add(correct ? 'flash-correct' : 'flash-wrong');
+    setTimeout(() => btn.classList.remove('flash-correct', 'flash-wrong'), 220);
+  }
+  function gameLoop(timestamp) {
+    if (!state.running || state.paused) return;
+    if (!state.lastFrameTime) state.lastFrameTime = timestamp;
+    const deltaMs = timestamp - state.lastFrameTime;
+    state.lastFrameTime = timestamp;
+
+    // Decrementa o cronômetro
+    state.timeRemaining -= deltaMs / 1000;
+    if (state.timeRemaining <= 0) {
+      state.timeRemaining = 0;
+      updateStats();
+      gameOver();
+      return;
+    }
+
+    const pixelSpeed = getPixelSpeed();
+    const deltaPx = (pixelSpeed * deltaMs) / 1000;
+    state.activeNotes.forEach(an => {
+      an.x -= deltaPx;
+      if (an.status === 'active' && an.x < HIT_ZONE_X - HIT_TOLERANCE) {
+        an.status = 'miss';
+        state.misses++; state.combo = 0; updateStats();
+      }
+      if (an.x < -20) an.status = 'gone';
+    });
+    state.activeNotes = state.activeNotes.filter(an => an.status !== 'gone');
+    const spawnIntervalMs = getSpawnIntervalMs();
+    if (timestamp - state.lastSpawnTime > spawnIntervalMs) {
+      spawnNote();
+      state.lastSpawnTime = timestamp;
+    }
+    updateStats();
+    renderFrame();
+    state.rafId = requestAnimationFrame(gameLoop);
+  }
+  function gameOver() {
+    state.running = false;
+    state.paused = false;
+    cancelAnimationFrame(state.rafId);
+
+    // Checa novo recorde
+    const prevBest = state.bestScores[state.studyMode] || 0;
+    const isNewRecord = state.score > prevBest;
+    if (isNewRecord) {
+      state.bestScores[state.studyMode] = state.score;
+      saveState();
+    }
+
+    // Preenche o overlay
+    const total = state.hits + state.misses;
+    const accuracy = total === 0 ? '—' : Math.round((state.hits / total) * 100) + '%';
+    const modeNames = { aleatorias: 'Aleatórias', escala: 'Escala', arpejos: 'Arpejos', padrao3: 'Padrão 3ªs' };
+    document.getElementById('gameover-mode-label').textContent =
+      'Modo: ' + (modeNames[state.studyMode] || state.studyMode) +
+      ' • ' + (state.keyObj ? state.keyObj.name : '');
+    document.getElementById('gameover-score').textContent = state.score;
+    document.getElementById('gameover-hits').textContent = state.hits;
+    document.getElementById('gameover-misses').textContent = state.misses;
+    document.getElementById('gameover-accuracy').textContent = accuracy;
+    document.getElementById('gameover-best-combo').textContent = state.bestCombo;
+    document.getElementById('gameover-record').classList.toggle('hidden', !isNewRecord);
+
+    // Mostra overlay
+    document.getElementById('gameover-overlay').classList.add('show');
+    document.getElementById('btn-start').style.display = 'inline-block';
+    document.getElementById('btn-pause').style.display = 'none';
+  }
+
+  function startGame() {
+    if (state.running && !state.paused) return;
+    // Se está iniciando novo round (não estava só pausado), reseta tudo
+    if (!state.running) {
+      state.activeNotes = []; state.nextNoteId = 1;
+      state.lastSpawnedNoteIdx = -1;
+      state.sequenceIdx = 0;
+      state.sequenceDirection = 1;
+      state.timeRemaining = state.gameDuration;
+      state.score = 0;
+      resetCounters();
+      document.getElementById('gameover-overlay').classList.remove('show');
+    }
+    state.running = true;
+    state.paused = false;
+    state.lastFrameTime = 0;
+    state.lastSpawnTime = performance.now() - 500;
+    document.getElementById('btn-start').style.display = 'none';
+    document.getElementById('btn-pause').style.display = 'inline-block';
+    document.getElementById('btn-pause').innerHTML = '⏸ Pausar <span class="kbd-hint">[espaço]</span>';
+    state.rafId = requestAnimationFrame(gameLoop);
+    document.getElementById('app-root').focus();
+    getAudioCtx();
+  }
+  function pauseGame() {
+    if (!state.running) return;
+    state.paused = !state.paused;
+    if (state.paused) {
+      cancelAnimationFrame(state.rafId);
+      document.getElementById('btn-pause').innerHTML = '▶ Continuar <span class="kbd-hint">[espaço]</span>';
+    } else {
+      state.lastFrameTime = 0;
+      document.getElementById('btn-pause').innerHTML = '⏸ Pausar <span class="kbd-hint">[espaço]</span>';
+      state.rafId = requestAnimationFrame(gameLoop);
+    }
+  }
+  function toggleStartPause() {
+    if (!state.running) startGame();
+    else pauseGame();
+  }
+  function resetGame() {
+    state.running = false; state.paused = false;
+    cancelAnimationFrame(state.rafId);
+    state.activeNotes = []; state.nextNoteId = 1;
+    state.lastSpawnedNoteIdx = -1;
+    state.sequenceIdx = 0;
+    state.sequenceDirection = 1;
+    state.timeRemaining = state.gameDuration;
+    state.score = 0;
+    resetCounters();
+    document.getElementById('gameover-overlay').classList.remove('show');
+    document.getElementById('btn-start').style.display = 'inline-block';
+    document.getElementById('btn-pause').style.display = 'none';
+    renderFrame();
+  }
+  function resetCounters() {
+    state.hits = 0; state.misses = 0; state.combo = 0;
+    updateStats();
+  }
+
+  // Chips de Modo (single-select) — Aleatórias / Escala / Arpejos / Padrão 3ªs
+  document.querySelectorAll('.chip[data-mode]').forEach(b => {
+    b.addEventListener('click', () => {
+      const mode = b.dataset.mode;
+      state.studyMode = mode;
+      document.querySelectorAll('.chip[data-mode]').forEach(x =>
+        x.classList.toggle('active', x.dataset.mode === mode)
+      );
+      // Saltos só importam em Aleatórias
+      document.getElementById('saltos-row').style.display = (mode === 'aleatorias') ? 'flex' : 'none';
+      buildModeSequence();
+      state.lastSpawnedNoteIdx = -1;
+      resetGame();
+      saveState();
+      document.getElementById('app-root').focus();
+    });
+  });
+
+  // Chips de Saltos (multi-select, ao menos 1 ativo) — usado apenas em modo Aleatórias
+  document.querySelectorAll('.chip[data-grau]').forEach(b => {
+    b.addEventListener('click', () => {
+      const grau = parseInt(b.dataset.grau);
+      const isActive = b.classList.contains('active');
+      if (isActive) {
+        const activeCount = document.querySelectorAll('.chip[data-grau].active').length;
+        if (activeCount <= 1) return;
+        b.classList.remove('active');
+        state.allowedGraus = state.allowedGraus.filter(g => g !== grau);
+      } else {
+        b.classList.add('active');
+        if (!state.allowedGraus.includes(grau)) state.allowedGraus.push(grau);
+      }
+      state.lastSpawnedNoteIdx = -1;
+      resetGame();
+      saveState();
+      document.getElementById('app-root').focus();
+    });
+  });
+
+  // Chips de Oitavas (multi-select, ao menos 1 ativo) — filtra as notas do jogo
+  document.querySelectorAll('.chip[data-oct]').forEach(b => {
+    b.addEventListener('click', () => {
+      const oct = parseInt(b.dataset.oct);
+      const isActive = b.classList.contains('active');
+      if (isActive) {
+        const activeCount = document.querySelectorAll('.chip[data-oct].active').length;
+        if (activeCount <= 1) return; // não deixa desativar todas
+        b.classList.remove('active');
+        state.allowedOctaves = state.allowedOctaves.filter(o => o !== oct);
+      } else {
+        b.classList.add('active');
+        if (!state.allowedOctaves.includes(oct)) state.allowedOctaves.push(oct);
+      }
+      state.allowedOctaves.sort();
+      // Reconstruir tudo: notas filtradas, sequência, botões, e resetar o jogo
+      state.notes = buildScaleNotes(state.keyObj);
+      buildModeSequence();
+      renderEasyButtons();
+      state.lastSpawnedNoteIdx = -1;
+      resetGame();
+      saveState();
+      document.getElementById('app-root').focus();
+    });
+  });
+
+  // Chips de espaçamento (single-select)
+  document.querySelectorAll('.chip[data-bpn]').forEach(b => {
+    b.addEventListener('click', () => {
+      const bpn = parseFloat(b.dataset.bpn);
+      document.querySelectorAll('.chip[data-bpn]').forEach(x => x.classList.toggle('active', x === b));
+      state.beatsPerNote = bpn;
+      saveState();
+      document.getElementById('app-root').focus();
+    });
+  });
+  document.getElementById('btn-start').addEventListener('click', () => { startGame(); });
+  document.getElementById('btn-pause').addEventListener('click', () => { pauseGame(); document.getElementById('app-root').focus(); });
+  document.getElementById('btn-play-again').addEventListener('click', () => { startGame(); });
+  document.getElementById('btn-reset').addEventListener('click', () => { resetGame(); document.getElementById('app-root').focus(); });
+  document.getElementById('btn-mic').addEventListener('click', () => {
+    if (state.micEnabled) disableMic();
+    else enableMic();
+    document.getElementById('app-root').focus();
+  });
+
+  // ===== Transcritor: botões =====
+  document.getElementById('btn-mic-tr').addEventListener('click', () => {
+    if (state.micEnabled) disableMic();
+    else enableMic();
+  });
+  document.getElementById('btn-clear-tr').addEventListener('click', () => {
+    clearTranscribedNotes();
+  });
+
+  // ===== Tabs: navegação entre páginas =====
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const targetPage = tab.dataset.page;
+      if (state.currentPage === targetPage) return;
+
+      // Desliga mic e speech ao trocar de página (força reativação na nova)
+      if (state.micEnabled) disableMic();
+      if (state.speechEnabled) disableSpeech();
+      // Se o jogo estiver rodando, reseta
+      if (state.running) resetGame();
+
+      state.currentPage = targetPage;
+      document.querySelectorAll('.tab').forEach(t =>
+        t.classList.toggle('active', t.dataset.page === targetPage)
+      );
+      document.querySelectorAll('.page').forEach(p =>
+        p.classList.toggle('active', p.id === 'page-' + targetPage)
+      );
+
+      // Renderiza pentagrama da nova página
+      if (targetPage === 'transcriber') {
+        renderTranscriberStaff();
+        updateTranscribedList();
+      }
+    });
+  });
+  document.getElementById('btn-speech').addEventListener('click', () => {
+    if (state.speechEnabled) disableSpeech();
+    else enableSpeech();
+    document.getElementById('app-root').focus();
+  });
+  document.getElementById('bpm-range').addEventListener('input', (e) => {
+    state.bpm = parseInt(e.target.value);
+    document.getElementById('bpm-val').textContent = state.bpm;
+    saveState();
+  });
+  document.getElementById('bpm-range').addEventListener('change', () => {
+    document.getElementById('app-root').focus();
+  });
+  document.getElementById('audio-on').addEventListener('change', (e) => {
+    state.audioOn = e.target.checked;
+    saveState();
+    document.getElementById('app-root').focus();
+  });
+  function handleKey(e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    const tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' && e.target.type === 'text') return;
+    if (tag === 'textarea') return;
+    if (e.key === ' ' || e.code === 'Space') {
+      e.preventDefault(); toggleStartPause(); return;
+    }
+    if (e.key === 'r' || e.key === 'R') {
+      e.preventDefault(); resetGame(); return;
+    }
+  }
+  document.addEventListener('keydown', handleKey);
+
+  loadState();
+  state.keyObj = KEYS.find(k => k.id === state.keyId);
+  state.notes = buildScaleNotes(state.keyObj);
+  buildModeSequence();
+  populateKeySelect();
+  document.getElementById('bpm-range').value = state.bpm;
+  document.getElementById('bpm-val').textContent = state.bpm;
+  document.getElementById('audio-on').checked = state.audioOn;
+  document.querySelectorAll('.chip[data-mode]').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === state.studyMode);
+  });
+  document.getElementById('saltos-row').style.display = (state.studyMode === 'aleatorias') ? 'flex' : 'none';
+  document.querySelectorAll('.chip[data-grau]').forEach(b => {
+    const g = parseInt(b.dataset.grau);
+    b.classList.toggle('active', state.allowedGraus.includes(g));
+  });
+  document.querySelectorAll('.chip[data-oct]').forEach(b => {
+    const o = parseInt(b.dataset.oct);
+    b.classList.toggle('active', state.allowedOctaves.includes(o));
+  });
+  document.querySelectorAll('.chip[data-bpn]').forEach(b => {
+    const bpn = parseFloat(b.dataset.bpn);
+    b.classList.toggle('active', Math.abs(bpn - state.beatsPerNote) < 0.01);
+  });
+  renderEasyButtons();
+  updateSpeechButtonState();
+  renderFrame();
+  renderTranscriberStaff();
+  updateTranscribedList();
+  updateStats();
+})();
+</script>
+
+</body>
+</html>

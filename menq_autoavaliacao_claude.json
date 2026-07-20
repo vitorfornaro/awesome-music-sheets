@@ -1,0 +1,11 @@
+{
+  "revisor": "Claude (validação humana compasso a compasso, PDF x transcrição)",
+  "veredito_geral": "Juninas Menq: alturas e ritmo fiéis na maioria. Defeito recorrente = TERCINA de semínima não detectada (colchete '3' no PDF vira nota reta). Causa-raiz: autoclose só pega tercina quando o compasso é 6 semínimas; tercina parcial fecha em 4/4 e passa reto. Fix ideal: detectar o glifo '3' (tuplet bracket) no vector_extract.",
+  "problemas": [
+    {"musica":"Onde está você","tipo":"ritmo (tercina não detectada)","compassos":[25,27,29,31]},
+    {"musica":"Espumas ao Vento","tipo":"ritmo (tercina não detectada)","compassos":[17,23]},
+    {"musica":"Fogo e Paixão","tipo":"ritmo (tercina não detectada)","compassos":[5,49,52]},
+    {"musica":"Nosso Xote","tipo":"ritmo (tercina não detectada)","compassos":[3]}
+  ],
+  "fieis_conferidos": ["Táxi Lunar","Último pau de arara","Baião","Sanfona Sentida","Sabiá","Anunciação","Ai que saudade","Diamantina","Festa no Interior","Frevo Mulher","Lindo Lago do Amor","Asa Branca","Hino","Pagode Russo","Festa","Canto da Ema","Desabafo","Feira de Mangaio","Olha pro céu","Xote das meninas","Eu só quero um xodó"]
+}

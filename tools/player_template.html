@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
+<title>__TITLE__ — Sax Alto (player)</title>
+<style>
+  :root{ --accent:#c0392b; --bg:#faf9f7; --ink:#1a1a1a; }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);}
+  header{padding:16px 20px 8px;}
+  h1{font-size:20px;margin:0 0 2px;}
+  .sub{color:#666;font-size:13px;margin:0;}
+  #bar{position:sticky;top:0;z-index:10;background:rgba(250,249,247,.97);backdrop-filter:blur(6px);
+       border-bottom:1px solid #e6e3de;padding:10px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+  button{font-size:15px;padding:9px 18px;border:0;border-radius:22px;background:var(--accent);color:#fff;cursor:pointer;font-weight:600;}
+  button:active{transform:translateY(1px)}
+  #seek{flex:1;min-width:160px;accent-color:var(--accent);}
+  #time{font-variant-numeric:tabular-nums;color:#555;font-size:13px;min-width:82px;}
+  label.small{font-size:13px;color:#555;display:flex;align-items:center;gap:6px;}
+  #wrap{display:flex;gap:16px;align-items:flex-start;max-width:1400px;margin:0 auto;padding:8px 16px 80px;}
+  #score{flex:1;min-width:0;position:relative;overflow-x:auto;}
+  #score svg{width:100%;height:auto;}
+  #playbar{position:absolute;background:rgba(155,89,182,.35);pointer-events:none;display:none;z-index:1;border-radius:2px;}
+  #original{flex:1;min-width:0;display:none;border-left:1px solid #e6e3de;padding-left:16px;}
+  #original .lbl{font-size:12px;color:#999;text-transform:uppercase;letter-spacing:.5px;margin:0 0 8px;}
+  #original img{width:100%;height:auto;display:block;margin-bottom:8px;border:1px solid #eee;}
+  body.cmp #original{display:block;}
+  g.playing, g.playing *{ fill:var(--accent) !important; stroke:var(--accent) !important; }
+  #cmp{background:#6b6b6b;} #loop{background:#6b6b6b;} #loop.on{background:#2e7d5b;}
+  #score g.measure{cursor:pointer;}
+  /* zona de clique invisível por padrão (o verovio força stroke em rect via seletor de id,
+     por isso o !important); só aparece um leve destaque no hover */
+  .mzone{fill:none !important;stroke:none !important;}
+  #score g.measure:hover .mzone{fill:rgba(192,57,43,.12) !important;}
+</style>
+</head>
+<body>
+<header>
+  <h1>__TITLE__ — <span style="color:var(--accent)">__ARTIST__</span></h1>
+  <p class="sub">__SUBLINE__</p>
+</header>
+<div id="bar">
+  <button id="play">▶ Tocar</button>
+  <span id="time">0:00 / 0:00</span>
+  <input id="seek" type="range" min="0" max="1000" value="0">
+  <label class="small">Velocidade
+    <input id="rate" type="range" min="0.5" max="1.5" step="0.05" value="1" style="width:130px;accent-color:var(--accent);vertical-align:middle;">
+    <span id="rateVal" style="min-width:42px;font-variant-numeric:tabular-nums;">1.00×</span>
+  </label>
+  <label class="small">Espaçamento
+    <input id="space" type="range" min="1" max="3" step="0.1" value="1" style="width:130px;accent-color:var(--accent);vertical-align:middle;">
+    <span id="spaceVal" style="min-width:42px;font-variant-numeric:tabular-nums;">1.0×</span>
+  </label>
+  <button id="loop">🔁 Repetir</button>
+  <button id="cmp">📄 PDF original</button>
+</div>
+<div id="wrap">
+  <div id="score">__SVG__</div>
+  <div id="original"><p class="lbl">Original (PDF) — apenas para comparação</p>__ORIGINAL__</div>
+</div>
+<audio id="audio" src="__MP3_SRC__" preload="auto"></audio>
+<script>
+const NOTES=__TIMEMAP__;
+const audio=document.getElementById('audio'), playBtn=document.getElementById('play'),
+      seek=document.getElementById('seek'), timeEl=document.getElementById('time'),
+      rateSel=document.getElementById('rate'), rateVal=document.getElementById('rateVal');
+let cur=new Set();
+const fmt=t=>{t=Math.max(0,t||0);const m=Math.floor(t/60),s=Math.floor(t%60);return m+":"+String(s).padStart(2,'0');};
+function highlight(ms){
+  const want=new Set();
+  for(const id in NOTES){for(const w of NOTES[id]){ if(ms>=w[0]-15 && ms<w[1]-15){want.add(id);break;} }}
+  cur.forEach(id=>{if(!want.has(id)){const el=document.getElementById(id); if(el)el.classList.remove('playing');}});
+  let first=null;
+  want.forEach(id=>{if(!cur.has(id)){const el=document.getElementById(id); if(el){el.classList.add('playing'); if(!first)first=el;}}});
+  cur=want;
+  // retângulo roxo sobreposto (div HTML) na posição real da nota atual
+  const scoreEl=document.getElementById('score');
+  if(!window._pb){window._pb=document.createElement('div');window._pb.id='playbar';scoreEl.appendChild(window._pb);}
+  let curEl=null; for(const id of want){const e=document.getElementById(id); if(e){curEl=e;break;}}
+  if(curEl){
+    const nr=curEl.getBoundingClientRect(), sr=scoreEl.getBoundingClientRect();
+    window._pb.style.left=(nr.left-sr.left+scoreEl.scrollLeft-5)+'px';
+    window._pb.style.width=(nr.width+10)+'px';
+    window._pb.style.top=(nr.top-sr.top+scoreEl.scrollTop-34)+'px';
+    window._pb.style.height=(nr.height+68)+'px';
+    window._pb.style.display='';
+  } else window._pb.style.display='none';
+  if(first){const r=first.getBoundingClientRect(); if(r.top<100||r.bottom>window.innerHeight-40) first.scrollIntoView({behavior:'smooth',block:'center'});}
+}
+function loop(){
+  const ms=audio.currentTime*1000; highlight(ms);
+  const d=audio.duration||0; seek.value=d?Math.round(audio.currentTime/d*1000):0;
+  timeEl.textContent=fmt(audio.currentTime)+" / "+fmt(d);
+  if(!audio.paused) requestAnimationFrame(loop);
+}
+playBtn.onclick=()=>{ audio.paused?audio.play():audio.pause(); };
+audio.onplay=()=>{playBtn.textContent='⏸ Pausar'; requestAnimationFrame(loop);};
+audio.onpause=()=>{playBtn.textContent='▶ Tocar';};
+audio.onended=()=>{playBtn.textContent='▶ Tocar'; cur.forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('playing');}); cur.clear(); if(window._pb)window._pb.style.display='none';};
+seek.oninput=()=>{const d=audio.duration||0; audio.currentTime=d*seek.value/1000; highlight(audio.currentTime*1000); timeEl.textContent=fmt(audio.currentTime)+" / "+fmt(d);};
+rateSel.oninput=()=>{const r=parseFloat(rateSel.value); audio.playbackRate=r; rateVal.textContent=r.toFixed(2)+"×";};
+// espaçamento horizontal entre as notas (estica o SVG na largura; altura fixa)
+const spaceSel=document.getElementById('space'), spaceVal=document.getElementById('spaceVal');
+let _svgH=null;
+function applySpacing(){
+  const svg=document.querySelector('#score svg'); if(!svg) return;
+  if(_svgH===null) _svgH=svg.getBoundingClientRect().height;
+  const v=parseFloat(spaceSel.value);
+  svg.setAttribute('preserveAspectRatio','none');
+  svg.style.height=_svgH+'px';
+  svg.style.width=(v*100)+'%';
+  spaceVal.textContent=v.toFixed(1)+'×';
+  highlight(audio.currentTime*1000);
+}
+spaceSel.oninput=applySpacing;
+audio.onloadedmetadata=()=>{timeEl.textContent="0:00 / "+fmt(audio.duration);};
+document.getElementById('cmp').onclick=()=>{document.body.classList.toggle('cmp');};
+// loop: fica repetindo no mesmo play (ligado por padrão nos exercícios)
+const loopBtn=document.getElementById('loop');
+audio.loop=__LOOP__; if(audio.loop)loopBtn.classList.add('on');
+loopBtn.onclick=()=>{audio.loop=!audio.loop; loopBtn.classList.toggle('on',audio.loop); if(audio.loop&&audio.paused)audio.play();};
+// clicar num compasso => toca a partir dele
+(function setupMeasureClick(){
+  const SVGNS="http://www.w3.org/2000/svg";
+  document.querySelectorAll('#score g.measure').forEach(mg=>{
+    const ids=[...mg.querySelectorAll('g.note')].map(n=>n.id).filter(id=>NOTES[id]&&NOTES[id].length);
+    if(!ids.length) return;
+    // NOTES[id] = [[start,end],...] (janelas). menor start entre as notas do compasso.
+    const start=Math.min(...ids.map(id=>Math.min(...NOTES[id].map(w=>w[0]))));
+    let bb; try{bb=mg.getBBox();}catch(e){return;}
+    const r=document.createElementNS(SVGNS,'rect');
+    r.setAttribute('class','mzone');
+    r.setAttribute('x',bb.x); r.setAttribute('y',bb.y-120);
+    r.setAttribute('width',bb.width); r.setAttribute('height',bb.height+240);
+    r.style.pointerEvents='all';
+    mg.insertBefore(r,mg.firstChild);
+    mg.addEventListener('click',()=>{ audio.currentTime=start/1000; audio.play(); });
+    mg.setAttribute('title','tocar a partir deste compasso');
+  });
+})();
+</script>
+</body>
+</html>

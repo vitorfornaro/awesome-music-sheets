@@ -1,0 +1,21 @@
+{
+ "title": "Arpejo Menor de Lá",
+ "sharps": 0,
+ "flats": 0,
+ "tempo": 80,
+ "time": "4/4",
+ "measures": [
+  [
+   "A4:0.5",
+   "C5:0.5",
+   "E5:0.5",
+   "A5:0.5",
+   "E5:0.5",
+   "C5:0.5",
+   "A4:1"
+  ]
+ ],
+ "repeats": [
+  ""
+ ]
+}

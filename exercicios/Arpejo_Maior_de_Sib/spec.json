@@ -1,0 +1,21 @@
+{
+ "title": "Arpejo Maior de Sib",
+ "sharps": -2,
+ "flats": 0,
+ "tempo": 80,
+ "time": "4/4",
+ "measures": [
+  [
+   "B-4:0.5",
+   "D5:0.5",
+   "F5:0.5",
+   "B-5:0.5",
+   "F5:0.5",
+   "D5:0.5",
+   "B-4:1"
+  ]
+ ],
+ "repeats": [
+  ""
+ ]
+}
