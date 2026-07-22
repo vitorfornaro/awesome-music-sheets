@@ -1,0 +1,16 @@
+# Pipeline sax-partituras — dependências Python (testado em Python 3.9+)
+#
+#   python3 -m pip install -r requirements.txt
+#
+# Fora do pip (instale pelo gerenciador do sistema, ex.: `brew install ffmpeg poppler`):
+#   - ffmpeg    (codificação do MP3)
+#   - poppler   (pdftoppm / pdfinfo, usados no render/segmentação de páginas)
+
+music21>=9.1            # modelo musical: spec -> MusicXML, beaming, ties/slurs
+verovio>=4.0            # engraving MusicXML -> SVG + timemap (sincronia do cursor)
+PyMuPDF>=1.24           # (import fitz) leitura vetorial do PDF do MuseScore
+numpy>=1.26             # síntese aditiva do timbre de sax
+Pillow>=10.0            # (import PIL) miniaturas e composições de QA
+CairoSVG>=2.7           # SVG -> PNG (thumbs / validação)
+pretty_midi>=0.2.10     # manipulação do MIDI intermediário
+opencv-python-headless>=4.8   # (import cv2) apoio à segmentação/comparação de compassos

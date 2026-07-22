@@ -1,0 +1,32 @@
+MIT License
+
+Copyright (c) 2026 Vitor Fornaro
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---------------------------------------------------------------------------
+NOTA SOBRE O CONTEÚDO MUSICAL
+
+A licença MIT acima cobre apenas o CÓDIGO deste repositório (o pipeline em
+`tools/`, os templates e os geradores). As partituras, arquivos de áudio e os
+PDFs originais das músicas populares (pastas `songs/`, `exercicios/` e
+`_repertorio_menq/`) podem estar sujeitos a direitos autorais de seus
+respectivos titulares e são disponibilizados aqui apenas para fins de estudo
+pessoal e demonstração técnica, sem finalidade comercial. Os exercícios e
+arpejos são gerados programaticamente e são de domínio público.
